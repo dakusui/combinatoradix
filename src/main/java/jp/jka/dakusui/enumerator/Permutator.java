@@ -5,12 +5,10 @@ import java.util.List;
 
 
 public class Permutator<T> extends Enumerator<T> {
-	List<T> list;
 	int k;
 	
 	public Permutator(List<T> list, int k) {
-		super(nPk(list.size(), k));
-		this.list = list;
+		super(list, nPk(list.size(), k));
 		this.k = k;
 	}
 		
@@ -35,20 +33,5 @@ public class Permutator<T> extends Enumerator<T> {
 			radix++;
 		}
 		return seq;
-	}
-	
-	public static void main(String... args) {
-		List<String> work = new LinkedList<String>();
-		work.add("A");
-		work.add("B");
-		work.add("C");
-//		work.add("D");
-//		work.add("E");
-		
-		Permutator<String> c = new Permutator<String>(work, 3);
-		
-		while (c.hasNext()) {
-			System.out.println(c.next());
-		}
 	}
 }

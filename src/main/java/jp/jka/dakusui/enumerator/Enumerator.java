@@ -8,9 +8,11 @@ public abstract class Enumerator<T> implements Iterator<List<T>>{
 
 	private long index;
 	private long numEnum;
+	protected List<T> list;
 
-	protected Enumerator(long numEnum) {
+	protected Enumerator(List<T> list, long numEnum) {
 		this.numEnum = numEnum;
+		this.list = list;
 	}
 	
 	public abstract List<T> get(long index);

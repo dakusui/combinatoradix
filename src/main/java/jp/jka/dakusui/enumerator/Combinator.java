@@ -6,19 +6,17 @@ import java.util.List;
 
 public class Combinator<T> extends Enumerator<T> {
 	private int k;
-	private List<T> items;
 
 	public Combinator(List<T> items, int k) {
-		super(nCk(items.size(), k));
+		super(new ArrayList<T>(items), nCk(items.size(), k));
 		this.k = k;
-		this.items = new ArrayList<T>(items);
 	}
 	
 	@Override
 	public List<T> get(long index) {
 		List<T> ret = new LinkedList<T>();
-		List<T> tmp = new ArrayList<T>(this.items);
-		int[] dfrlong = long2dfrlong(index, items.size(), k);
+		List<T> tmp = new ArrayList<T>(this.list);
+		int[] dfrlong = long2dfrlong(index, list.size(), k);
 		for (int i : dfrlong) {
 			T last = null;
 			for (int j = 0; j <= i; j++) {
@@ -65,20 +63,5 @@ public class Combinator<T> extends Enumerator<T> {
 		CDivResult result = new CDivResult();
 		cdiv(result, index, n, k);
 		System.out.println("q=(" + result.quotient + "),mod=(" + result.mod + ")");
-	}
-
-	public static void main(String... args) {
-		List<String> work = new LinkedList<String>();
-		work.add("A");
-		work.add("B");
-		work.add("C");
-		work.add("D");
-		work.add("E");
-		
-		Combinator<String> c = new Combinator<String>(work, 3);
-		
-		while (c.hasNext()) {
-			System.out.println(c.next());
-		}
 	}
 }
