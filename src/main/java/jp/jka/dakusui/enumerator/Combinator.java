@@ -5,19 +5,30 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Combinator<T> extends Enumerator<T> {
-	private int k;
+	int k;
 
+	protected Combinator(List<T> items, long maxIndex) {
+		super(arrayList(items), maxIndex);
+	}
+	
 	public Combinator(List<T> items, int k) {
-		super(new ArrayList<T>(items), nCk(items.size(), k));
+		super(arrayList(items), maxIndex(items, k));
 		this.k = k;
 	}
 	
+	private static <T> List<T> arrayList(List<T> items) {
+		if (items instanceof ArrayList) {
+			return items;
+		}
+		return new ArrayList<T>(items);
+	}
+
 	@Override
-	public List<T> get(long index) {
+	protected List<T> get_Protected(long index) {
 		List<T> ret = new LinkedList<T>();
 		List<T> tmp = new ArrayList<T>(this.list);
-		int[] dfrlong = long2dfrlong(index, list.size(), k);
-		for (int i : dfrlong) {
+		int[] locator = index2locator(index, list.size(), k);
+		for (int i : locator) {
 			T last = null;
 			for (int j = 0; j <= i; j++) {
 				last = tmp.remove(0);
@@ -32,7 +43,7 @@ public class Combinator<T> extends Enumerator<T> {
 		int  quotient;
 	}
 	
-	static int[] long2dfrlong(long index, int n, int k) {
+	private static int[] index2locator(long index, int n, int k) {
 		int[] ret = new int[k];
 		CDivResult result = new CDivResult();
 		for (int i = 0; i < k; i ++) {
@@ -43,7 +54,10 @@ public class Combinator<T> extends Enumerator<T> {
 		}
 		return ret;
 	}
-	
+
+	static <T> long maxIndex(List<T> items, int k) {
+		return nCk(items.size(), k);
+	}
 	
 	static void cdiv(CDivResult result, long index, int n, int k) {
 		int q = 0;
@@ -57,11 +71,5 @@ public class Combinator<T> extends Enumerator<T> {
 			index -= nnCk_1;
 			q++;
 		}
-	}
-
-	static void cdiv(long index, int n, int k) {
-		CDivResult result = new CDivResult();
-		cdiv(result, index, n, k);
-		System.out.println("q=(" + result.quotient + "),mod=(" + result.mod + ")");
 	}
 }
