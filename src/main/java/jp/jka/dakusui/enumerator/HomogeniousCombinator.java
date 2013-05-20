@@ -6,40 +6,7 @@ import java.util.List;
 
 public class HomogeniousCombinator<T> extends Combinator<T> {
 
-	protected HomogeniousCombinator(List<T> list, long maxIndex) {
-		super(list, maxIndex);
-	}
-	
-	public HomogeniousCombinator(List<T> list, int k) {
-		super(list, nHk(list.size(), k));
-		this.k = k;
-	}
-
-	@Override
-	protected List<T> get_Protected(long index) {
-		List<T> ret = new LinkedList<T>();
-		List<T> tmp = new ArrayList<T>(this.list);
-		int[] locator = index2locator(index, list.size(), k);
-		for (int i : locator) {
-			ret.add(tmp.get(i));
-			tmp = tmp.subList(i, tmp.size());
-		}
-		return ret;
-	}
-
-	private static int[] index2locator(long index, int n, int k) {
-		int[] ret = new int[k];
-		CDivResult result = new CDivResult();
-		for (int i = 0; i < k; i++) {
-			hdiv(result, index, n, k - i);
-			index = result.mod;
-			ret[i] = result.quotient;
-			n -= result.quotient;
-		}
-		return ret;
-	}
-	
-	static void hdiv(CDivResult result, long index, int n, int k) {
+	private static void hdiv(CDivResult result, long index, int n, int k) {
 		int q = 0;
 		for (int nn = n; nn > 0; nn--) {
 			long nnHk_1 = nHk(nn, k-1); 
@@ -51,5 +18,38 @@ public class HomogeniousCombinator<T> extends Combinator<T> {
 			index -= nnHk_1;
 			q++;
 		}
+	}
+	
+	private static int[] index2locator(long index, int n, int k) {
+		int[] ret = new int[k];
+		CDivResult result = new CDivResult();
+		for (int i = 0; i < k; i++) {
+			hdiv(result, index, n, k - i);
+			index = result.mod;
+			ret[i] = result.quotient;
+			n -= result.quotient;
+		}
+		return ret;
+	}
+
+	public HomogeniousCombinator(List<T> list, int k) {
+		super(list, k);
+	}
+
+	@Override
+	protected List<T> get_Protected(long index) {
+		List<T> ret = new LinkedList<T>();
+		List<T> tmp = new ArrayList<T>(this.items);
+		int[] locator = index2locator(index, items.size(), k);
+		for (int i : locator) {
+			ret.add(tmp.get(i));
+			tmp = tmp.subList(i, tmp.size());
+		}
+		return ret;
+	}
+	
+	@Override
+	protected long size() {
+		return nHk(this.items.size(), this.k);
 	}
 }

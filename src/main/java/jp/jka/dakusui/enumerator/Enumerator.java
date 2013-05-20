@@ -36,22 +36,35 @@ public abstract class Enumerator<T> implements Iterator<List<T>>{
 		return ret;
 	}
 	
+	private long enumSize;
+
 	private long index;
-
-	protected List<T> list;
 	
-	private long maxIndex;
+	protected int k;
 
-	protected Enumerator(List<T> list, long maxIndex) {
-		this.maxIndex = maxIndex;
-		this.list = list;
+	protected List<T> items;
+
+	protected Enumerator(List<T> items, int k) {
+		this.items = items;
+		this.k = k;
+		this.enumSize = size();
+	}
+	
+	public List<T> get(long index) {
+		if (index < enumSize) {
+			return get_Protected(index);
+		}
+		String msg = String.format("Index (%d) must be less than %d", index, this.enumSize);
+		throw new IndexOutOfBoundsException(msg);
 	}
 	
 	protected abstract List<T> get_Protected(long index);
+
+	protected abstract long size();
 	
 	@Override
 	public boolean hasNext() {
-		return this.index < this.maxIndex;
+		return this.index < this.enumSize;
 	}
 
 	@Override
@@ -67,13 +80,5 @@ public abstract class Enumerator<T> implements Iterator<List<T>>{
 	public void remove() {
 		String message = "This operation is not supported.";
 		throw new UnsupportedOperationException(message);
-	}
-
-	public List<T> get(long index) {
-		if (index < maxIndex) {
-			return get_Protected(index);
-		}
-		String msg = String.format("Index (%d) must be less than %d", index, this.maxIndex);
-		throw new IndexOutOfBoundsException(msg);
 	}
 }
