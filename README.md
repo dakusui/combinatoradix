@@ -1,6 +1,4 @@
 # Enumerator
-Welcome to the Enumerator wiki!
-
 "Enumerator" is a Java library which allows you to enumerate permutations, combinations, and repeated combinations of a set that you give it to in a pretty natural Java manner like below,
 
 ```java
