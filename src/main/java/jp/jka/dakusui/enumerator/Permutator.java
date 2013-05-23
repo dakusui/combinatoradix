@@ -3,7 +3,11 @@ package jp.jka.dakusui.enumerator;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * @author hiroshi
+ *
+ * @param <T>
+ */
 public class Permutator<T> extends Enumerator<T> {
 	static int[] index2locator(long index, int lsradix, int k) {
 		int[] seq = new int[k];
@@ -33,7 +37,7 @@ public class Permutator<T> extends Enumerator<T> {
 	}
 
 	@Override
-	protected long size() {
+	public long size() {
 		return nPk(this.items.size(), this.k);
 	}
 }

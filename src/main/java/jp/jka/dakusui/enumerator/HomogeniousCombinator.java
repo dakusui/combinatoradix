@@ -49,7 +49,7 @@ public class HomogeniousCombinator<T> extends Combinator<T> {
 	}
 	
 	@Override
-	protected long size() {
+	public long size() {
 		return nHk(this.items.size(), this.k);
 	}
 }
