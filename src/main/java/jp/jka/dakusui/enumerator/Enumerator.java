@@ -60,7 +60,7 @@ public abstract class Enumerator<T> implements Iterator<List<T>>{
 	
 	protected abstract List<T> get_Protected(long index);
 
-	protected abstract long size();
+	public abstract long size();
 	
 	@Override
 	public boolean hasNext() {

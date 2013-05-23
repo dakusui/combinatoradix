@@ -63,7 +63,7 @@ public class Combinator<T> extends Enumerator<T> {
 	}
 
 	@Override
-	protected long size() {
+	public long size() {
 		return nCk(this.items.size(), this.k);
 	}
 }
