@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public abstract class Enumerator<T> implements Iterator<List<T>>{
+public abstract class Enumerator<T> implements Iterator<List<T>>, Iterable<List<T>> {
 
 	static long factorial(long n) {
 		if (n < 0) {
@@ -80,5 +80,10 @@ public abstract class Enumerator<T> implements Iterator<List<T>>{
 	public void remove() {
 		String message = "This operation is not supported.";
 		throw new UnsupportedOperationException(message);
+	}
+	
+	@Override
+	public Iterator<List<T>> iterator() {
+		return this;
 	}
 }
