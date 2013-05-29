@@ -2,6 +2,8 @@ package com.github.dakusui.enumerator;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import com.github.dakusui.enumerator.Enumerator;
@@ -94,5 +96,16 @@ public class PermutatorTest extends EnumeratorTestBase {
 		assertEquals(true, p.hasNext());
 		assertEquals(toList("C", "B", "A"), p.next());
 		assertEquals(false, p.hasNext());
+	}
+	
+	@Test
+	public void test_forEach() {
+		Enumerator<String> p = new Permutator<String>(testset2(), 3);
+		int i = 0;
+		for (List<String> entry : p) {
+			assertEquals(3, entry.size());
+			i++;
+		}
+		assertEquals(Enumerator.nPk(3, 3), i);
 	}
 }
