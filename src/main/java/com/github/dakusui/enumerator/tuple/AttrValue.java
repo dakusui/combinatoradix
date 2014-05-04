@@ -19,7 +19,8 @@ public class AttrValue<T, U> {
 
   @Override
   public int hashCode() {
-    return ((this.attr == null) ? 0 : this.attr.hashCode()) + ((this.value == null) ? 0 : this.value.hashCode());
+    return ((this.attr == null) ? 0 : this.attr.hashCode())
+        + ((this.value == null) ? 0 : this.value.hashCode());
   }
 
   @Override
@@ -28,7 +29,12 @@ public class AttrValue<T, U> {
       return false;
     @SuppressWarnings("unchecked")
     AttrValue<Object, Object> another = (AttrValue<Object, Object>) anotherObject;
-    return (this.value == null) ? value == null
-        : this.value.equals(another.value) && (this.attr == null) ? attr == null : this.attr.equals(another.attr);
+    return (this.value == null) ? value == null : this.value
+        .equals(another.value) && (this.attr == null) ? attr == null
+        : this.attr.equals(another.attr);
+  }
+
+  public String toString() {
+    return "(" + this.attr + "," + this.value + ")";
   }
 }
