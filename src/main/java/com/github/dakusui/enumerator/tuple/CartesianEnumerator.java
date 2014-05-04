@@ -1,33 +1,51 @@
 package com.github.dakusui.enumerator.tuple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
+import java.util.Set;
 
-public class CartesianEnumerator<T, U> extends TupleEnumerator<T, U> {
+import com.github.dakusui.enumerator.Enumerator;
 
-  public CartesianEnumerator(SortedMap<T, List<U>> attributeValues) {
-    super(attributeValues);
+public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
+
+  private ArrayList<T>                  attrsInReverseOrder;
+  private Map<T, List<AttrValue<T, U>>> attrValues = new HashMap<T, List<AttrValue<T, U>>>();
+
+  public CartesianEnumerator(AttrValue<T, U>... attributeValues) {
+    super(Arrays.asList(attributeValues), countAttributes(attributeValues));
+    this.attrsInReverseOrder = new ArrayList<T>(this.k);
+    for (AttrValue<T, U> cur : this.items) {
+      if (!this.attrsInReverseOrder.contains(cur.attr())) {
+        this.attrsInReverseOrder.add(cur.attr());
+      }
+    }
+    this.attrValues = attrValues();
+    Collections.reverse(this.attrsInReverseOrder);
+  }
+
+  private static int countAttributes(AttrValue<?, ?>[] attributeValues) {
+    Set<AttrValue<?, ?>> attrs = new HashSet<AttrValue<?, ?>>();
+    for (AttrValue<?, ?> attrValue : attributeValues) {
+      attrs.add(attrValue);
+    }
+    return attrs.size();
   }
 
   @Override
-  protected Tuple<T, U> get_Protected(long index) {
-    Tuple<T, U> ret = new Tuple<T, U>();
-    for (T key : keyListInReverseOrder()) {
-      List<U> values = this.attrValues.get(key);
+  protected List<AttrValue<T, U>> get_Protected(long index) {
+    List<AttrValue<T, U>> ret = new LinkedList<AttrValue<T, U>>();
+    for (T key : this.attrsInReverseOrder) {
+      List<AttrValue<T, U>> values = this.attrValues.get(key);
       int sz = values.size();
       int mod = (int) (index % sz);
       index /= sz;
-      ret.put(key, values.get(mod));
-    }
-    return ret;
-  }
-
-  private List<T> keyListInReverseOrder() {
-    List<T> ret = new ArrayList<T>(this.attrValues.size());
-    for (T key : this.attrValues.keySet()) {
-      ret.add(key);
+      ret.add(values.get(mod));
     }
     Collections.reverse(ret);
     return ret;
@@ -36,8 +54,21 @@ public class CartesianEnumerator<T, U> extends TupleEnumerator<T, U> {
   @Override
   public long size() {
     long ret = 1;
-    for (List<U> values : attrValues.values()) {
+    for (List<AttrValue<T, U>> values : attrValues().values()) {
       ret *= values.size();
+    }
+    return ret;
+  }
+
+  private Map<T, List<AttrValue<T, U>>> attrValues() {
+    Map<T, List<AttrValue<T, U>>> ret = new HashMap<T, List<AttrValue<T, U>>>();
+    for (AttrValue<T, U> cur : this.items) {
+      List<AttrValue<T, U>> values = ret.get(cur.attr());
+      if (values == null) {
+        values = new LinkedList<AttrValue<T, U>>();
+        ret.put(cur.attr(), values);
+      }
+      values.add(cur);
     }
     return ret;
   }
