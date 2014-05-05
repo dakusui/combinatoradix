@@ -1,7 +1,6 @@
 package com.github.dakusui.enumerator.tuple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,13 +11,14 @@ import java.util.Set;
 
 import com.github.dakusui.enumerator.Enumerator;
 
-public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
+public class CartesianEnumerator<T extends Object, U extends Object> extends Enumerator<AttrValue<T, U>> {
 
-  private ArrayList<T>                  attrsInReverseOrder;
+  private final ArrayList<T> attrsInReverseOrder;
   private Map<T, List<AttrValue<T, U>>> attrValues = new HashMap<T, List<AttrValue<T, U>>>();
 
-  public CartesianEnumerator(AttrValue<T, U>... attributeValues) {
-    super(Arrays.asList(attributeValues), countAttributes(attributeValues));
+  @SuppressWarnings("unchecked")
+  public CartesianEnumerator(List<AttrValue<T, U>> attributeValues) {
+    super(attributeValues, countAttributes(attributeValues.toArray(new AttrValue[] {})));
     this.attrsInReverseOrder = new ArrayList<T>(this.k);
     for (AttrValue<T, U> cur : this.items) {
       if (!this.attrsInReverseOrder.contains(cur.attr())) {
@@ -29,7 +29,7 @@ public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
     Collections.reverse(this.attrsInReverseOrder);
   }
 
-  private static int countAttributes(AttrValue<?, ?>[] attributeValues) {
+  private static int countAttributes(AttrValue<Object, Object>[] attributeValues) {
     Set<AttrValue<?, ?>> attrs = new HashSet<AttrValue<?, ?>>();
     for (AttrValue<?, ?> attrValue : attributeValues) {
       attrs.add(attrValue);
