@@ -1,5 +1,6 @@
 package com.github.dakusui.enumerator;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,10 +12,13 @@ public class CartesianEnumeratorTest {
 
   @Test
   public void test() {
+    List<AttrValue<String, String>> attrValues = new LinkedList<AttrValue<String, String>>();
+    attrValues.add(attrValue("key1", "A"));
+    attrValues.add(attrValue("key1", "B"));
+    attrValues.add(attrValue("key2", "a"));
+    attrValues.add(attrValue("key2", "b"));
     @SuppressWarnings("unchecked")
-    Enumerator<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(
-        attrValue("key1", "A"), attrValue("key1", "B"), attrValue("key2", "a"),
-        attrValue("key2", "b"));
+    Enumerator<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(attrValues);
     int i = 0;
     for (List<AttrValue<String, String>> cur : enumerator) {
       System.out.println(String.format("%03d %s", i++, cur));
