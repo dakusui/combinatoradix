@@ -32,6 +32,9 @@ public abstract class Enumerator<T> implements Iterator<List<T>>, Iterable<List<
   static long nPk(long n, long k) {
     long ret = 1;
     for (long i = n; i > n - k; i--) {
+      if (i > Long.MAX_VALUE / ret) {
+        throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sP%k: %d * %d", n, k, ret, i));
+      }
       ret *= i;
     }
     return ret;

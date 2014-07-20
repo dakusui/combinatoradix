@@ -55,7 +55,12 @@ public class CartesianEnumerator<T extends Object, U extends Object> extends Enu
   public long size() {
     long ret = 1;
     for (List<AttrValue<T, U>> values : attrValues().values()) {
-      ret *= values.size();
+      long sz = values.size();
+      if (sz > Long.MAX_VALUE / ret) {
+        throw new IllegalArgumentException(String.format("Overflow. Too many attributes or attribute values: %d * %d", ret, sz));
+      } else {
+        ret *= sz;
+      }
     }
     return ret;
   }
