@@ -1,19 +1,17 @@
 package com.github.dakusui.enumerator;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.github.dakusui.enumerator.Enumerator;
-import com.github.dakusui.enumerator.HomogeniousCombinator;
+import static org.junit.Assert.assertEquals;
 
 public class HomogeniousCombinatorTest extends EnumeratorTestBase {
 	@Test
 	public void test_nH1() {
-		Enumerator<String> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 1);
+		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 1).iterator();
 		assertEquals(true, homogeniousCombinator.hasNext());
 		assertEquals(toList("A"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
@@ -29,7 +27,7 @@ public class HomogeniousCombinatorTest extends EnumeratorTestBase {
 
 	@Test
 	public void test_nH2() {
-		Enumerator<String> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 2);
+		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 2).iterator();
 		assertEquals(true, homogeniousCombinator.hasNext());
 		assertEquals(toList("A", "A"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
@@ -71,7 +69,7 @@ public class HomogeniousCombinatorTest extends EnumeratorTestBase {
 		items.add("D");
 		items.add("E");
 		
-		Enumerator<String> enumerator = new HomogeniousCombinator<String>(items, 2);
+		Iterator<List<String>> enumerator = new HomogeniousCombinator<String>(items, 2).iterator();
 		int i = 0;
 		while (enumerator.hasNext()) {
 			System.out.println(i + ":" + enumerator.next());

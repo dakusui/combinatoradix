@@ -3,7 +3,7 @@
 
   <groupId>com.github.dakusui</groupId>
   <artifactId>enumerator</artifactId>
-  <version>0.3.5-SNAPSHOT</version>
+  <version>0.4.0-SNAPSHOT</version>
   <description>A mathematical enumeration library for Java</description>
   <packaging>jar</packaging>
 
@@ -58,30 +58,6 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-
-      <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-release-plugin</artifactId>
-	<version>2.5</version>
-	<configuration>
-		<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
-	</configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -97,37 +73,4 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
-
-  <profiles>
-    <profile>
-      <id>release-sign-artifacts</id>
-      <activation>
-	<property>
-	  <name>performRelease</name>
-	  <value>true</value>
-	</property>
-      </activation>
-      <build>
-	<plugins>
-	  <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-	    <artifactId>maven-gpg-plugin</artifactId>
-	    <version>1.4</version>
-	    <configuration>
-	      <passphrase>${gpg.passphrase}</passphrase>
-	    </configuration>
-	    <executions>
-	      <execution>
-		<id>sign-artifacts</id>
-		<phase>verify</phase>
-		<goals>
-		  <goal>sign</goal>
-		</goals>
-	      </execution>
-	    </executions>
-	  </plugin>
-	</plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
