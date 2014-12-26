@@ -3,7 +3,7 @@
 
   <groupId>com.github.dakusui</groupId>
   <artifactId>enumerator</artifactId>
-  <version>0.5.0</version>
+  <version>0.4.3</version>
   <description>A mathematical enumeration library for Java</description>
   <packaging>jar</packaging>
 
