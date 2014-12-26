@@ -1,16 +1,16 @@
 package com.github.dakusui.enumerator;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import com.github.dakusui.enumerator.Combinator;
-import com.github.dakusui.enumerator.Enumerator;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class CombinatorTest extends EnumeratorTestBase {
 	@Test
 	public void test_nC0() {
-		Enumerator<String> combinator = new Combinator<String>(testset1(), 0);
+		Iterator<List<String>> combinator = new Combinator<String>(testset1(), 0).iterator();
 		assertEquals(true, combinator.hasNext());
 		assertEquals(toList(), combinator.next());
 		assertEquals(false, combinator.hasNext());
@@ -18,7 +18,7 @@ public class CombinatorTest extends EnumeratorTestBase {
 
 	@Test
 	public void test_nC1() {
-		Enumerator<String> combinator = new Combinator<String>(testset1(), 1);
+		Iterator<List<String>> combinator = new Combinator<String>(testset1(), 1).iterator();
 		assertEquals(true, combinator.hasNext());
 		assertEquals(toList("A"), combinator.next());
 		assertEquals(true, combinator.hasNext());
@@ -34,7 +34,7 @@ public class CombinatorTest extends EnumeratorTestBase {
 
 	@Test
 	public void test_nC2() {
-		Enumerator<String> combinator = new Combinator<String>(testset1(), 2);
+		Iterator<List<String>> combinator = new Combinator<String>(testset1(), 2).iterator();
 		assertEquals(true, combinator.hasNext());
 		assertEquals(toList("A", "B"), combinator.next());
 		assertEquals(true, combinator.hasNext());
@@ -60,7 +60,7 @@ public class CombinatorTest extends EnumeratorTestBase {
 
 	@Test
 	public void test_nC3() {
-		Enumerator<String> combinator = new Combinator<String>(testset1(), 3);
+		Iterator<List<String>> combinator = new Combinator<String>(testset1(), 3).iterator();
 		assertEquals(true, combinator.hasNext());
 		assertEquals(toList("A", "B", "C"), combinator.next());
 		assertEquals(true, combinator.hasNext());

@@ -9,26 +9,33 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CartesianEnumeratorAdaptor<T extends Map<U, V>, U, V>
-    implements Iterator<T>, Iterable<T> {
+        implements Iterator<T>, Iterable<T> {
   private final CartesianEnumerator<U, V> cart;
+  private final Iterator<List<AttrValue<U, V>>> iterator;
 
   protected CartesianEnumeratorAdaptor(Domains<U, V> domains) {
+
     this.cart = new CartesianEnumerator<U, V>(domains2AttrValues(domains));
+    this.iterator = this.cart.iterator();
   }
 
-  @Override public Iterator<T> iterator() {
+  @Override
+  public Iterator<T> iterator() {
     return this;
   }
 
-  @Override public boolean hasNext() {
-    return this.cart.hasNext();
+  @Override
+  public boolean hasNext() {
+    return this.iterator.hasNext();
   }
 
-  @Override public T next() {
-    return attrValues2map(this.cart.next());
+  @Override
+  public T next() {
+    return attrValues2map(this.iterator.next());
   }
 
-  @Override public void remove() {
+  @Override
+  public void remove() {
     throw new UnsupportedOperationException();
   }
 
