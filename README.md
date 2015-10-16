@@ -37,14 +37,20 @@ This program will print following.
     [Derek, Bob]
     [Derek, Christopher]
     [Derek, Elizabeth]
-]
+
 ```
+
+About what permutations, combinations, and repeated combinations are in more detail, 
+please refer to the pages [4] and [5].
 
 ```combinatoradix``` is created and maintained by Hiroshi Ukai (dakusui@gmail.com).
 
-## How it works and why you want to use combinatoradix 
+# How it works and why you want to use ```combinatoradix```
+## How it works
 As its name suggests, this library relies on "factorial number system"[2] "combinatorial number system"[3].
-Basic idea is to use a number system where each digit specifies an element in a given set.
+Basic idea is to use a number system where each digit specifies an element in a given set
+and map integers from 0 to P(n,k) - 1 to all the k-sequences without repetition on n-set.
+
 For instance, to enumerate permutations P(5,3), ```combinatoradix``` internally uses a number system below
 
 
@@ -60,31 +66,31 @@ All the possible numbers in this system are following.
 
 ```
 
-     0   1   2   3    4
-    10  11  12  13   14
-    20  21  22  23   24
-    30  31  32  33   34
-   100 101 102 103  104
-   110 111 112 113  114
-   120 121 122 123  124
-   130 131 132 133  134
-   200 201 202 203  204
-   210 211 212 213  214
-   220 221 222 223  224
-   230 231 232 233  234
+         0   1   2   3    4
+        10  11  12  13   14
+        20  21  22  23   24
+        30  31  32  33   34
+       100 101 102 103  104
+       110 111 112 113  114
+       120 121 122 123  124
+       130 131 132 133  134
+       200 201 202 203  204
+       210 211 212 213  214
+       220 221 222 223  224
+       230 231 232 233  234
 ```
 
 As shown, there are only 60 numbers and you may notice that P(5, 3) = 5! / 2! = 5 * 4 * 3 * 2 * 1 / 2 * 1 = 60.
-We can translate each of those sixty numbers into one permutation.
+We can translate each of those sixty numbers into one permutation respectively for instance,
 
 ```
 
-    0 -> (000) -> [Elizabeth, Derek, Christopher, Bob, Alice]
+    0 -> (000) -> [Christopher, Bob, Alice]
 ```
 
-For convenience, let's consider that those are strings and suppose a function ```nth(s, i)``` extracts ith digit
-from a string.
-E.g., 
+To describe the algorithm, for convenience, let's consider that those are strings and 
+suppose a function ```nth(s, i)``` extracts ith digit from a string.
+i.e., 
 
 ```
 
@@ -101,13 +107,16 @@ Then we can come up with a function that translates those strings into decimals 
     dec(s) = nth(s, 2) * 4 * 3 + nth(s, 1) * 4 + nth(s, 0)
 ```
 
-The algorithm is following. Suppose that ```S``` is a number represented in the number system.
+And suppose that ```S``` is a number represented in the system above. Now the 
+algorithm can be described as following.
 
-```
+```bash
 
-    remaining=[Alice, Bob, Christopher, Derek, Elizabeth]
+    # "initial" can be [Alice, Bob, Christopher, Derek, Elizabeth], for example.
+    initial=[...] 
+    remaining=initial
     tmp=[]
-    for i in [0 1 2]; do
+    for i in [0 1 2...k]; do
         each_digit=nth(S, i)
         tmp.insert(remaining[each_digt])
     done
@@ -129,12 +138,13 @@ That is, if the number is ```234```,
 Of course we can generalize this number system so that we can apply it to any P(n, k).
 The detail is discussed in a Wikipedia article[2].
 
+## Why you want to use ```combinatoradix```
 
-
-And this approach is clearly slower than other normal 'iterating' algorithm such as used by "combinatorics"[1].
+This approach is clearly slower than other normal 'iterating' algorithm such as used by "combinatorics"[1].
 But there are still very good reason to use it.
 
 + Predictable order
++ Easy to resume
 + Suitable for parallel execution
 
 
@@ -167,15 +177,61 @@ You can build combinatoradix by getting the source code from github.
 
 # How to use
 There are 3 main classes in this library,
-1. Permutator (com.github.dakusui.combinatoradix)
-2. Combinator (com.github.dakusui.combinatoradix)
-3. HomogeniousCombinator (com.github.dakusui.combinatoradix)
+
++ Permutator (com.github.dakusui.combinatoradix)
++ Combinator (com.github.dakusui.combinatoradix)
++ HomogeniousCombinator (com.github.dakusui.combinatoradix)
 
 All of them can be used in the same manner as mentioned above.
 Through the constructor you can give the instance a set of values to be enumerated how many elements in the set should be chosen at once to constructors of Permutator, Combinator, or HomogeniousCombinator. And then you can iterate all the possible permutations, combinations, or repeated combinations respectively.
 
-About what permutations, combinations, and repeated combinations are, please refer to the pages[4] and [5] presented in 
-"References" section.
+# Examples
+
+## Iterate all the partial permutations sequentially
+(t.b.d.)
+
+## Iterate all the partial permutations concurrently
+
+```java
+
+	@Test
+	public void runConcurrently() {
+		int longestCombination = buildPermutator(3, "Alice", "Bob", "Christopher", "Derek", "Elizabeth")
+				.parallelStream()
+				.map(combination -> {
+					int ret = 0;
+					for (String each : combination) {
+						ret += each.length();
+					}
+					return ret;
+				}).reduce(0, Integer::max);
+		System.out.println(longestCombination);
+	}
+
+	@SafeVarargs private final <E> EnumeratorAdapter<E> buildPermutator(int n, E... elements) {
+		return new EnumeratorAdapter<>(new Permutator<>(Arrays.<E>asList(elements), n));
+	}
+
+	public static class EnumeratorAdapter<E> extends AbstractList<List<E>> {
+		final Enumerator<E> enumerator;
+
+		public EnumeratorAdapter(Enumerator<E> enumerator) {
+			this.enumerator = enumerator;
+		}
+
+		@Override public List<E> get(int index) {
+			return this.enumerator.get(index);
+		}
+
+		@Override public int size() {
+			long ret = this.enumerator.size();
+			if (ret > Integer.MAX_VALUE) {
+				throw new IllegalStateException();
+			}
+			return (int) ret;
+		}
+	}
+```
 
 # References
 * [1] "combinatorics" library, Christian Trimble
