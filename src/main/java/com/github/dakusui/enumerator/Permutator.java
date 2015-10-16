@@ -31,7 +31,7 @@ public class Permutator<T> extends Enumerator<T> {
 		List<T> tmp = new LinkedList<T>(this.items);
 		List<T> ret = new LinkedList<T>();
 		for (int i : seq) {
-			ret.add(tmp.remove((int)i));
+			ret.add(tmp.remove(i));
 		}
 		return ret;
 	}

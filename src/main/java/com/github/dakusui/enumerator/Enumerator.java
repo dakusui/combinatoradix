@@ -11,8 +11,9 @@ public abstract class Enumerator<T> implements Iterable<List<T>> {
 			String msg = "n cannot be less than 0. (" + n + ")";
 			throw new RuntimeException(msg);
 		}
-		if (n == 0)
+		if (n == 0) {
 			return 1;
+		}
 		long ret = 1;
 		for (long i = n; i > 1; i--) {
 			ret *= i;
