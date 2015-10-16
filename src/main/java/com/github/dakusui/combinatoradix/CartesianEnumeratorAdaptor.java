@@ -1,7 +1,7 @@
-package com.github.dakusui.enumerator;
+package com.github.dakusui.combinatoradix;
 
-import com.github.dakusui.enumerator.tuple.AttrValue;
-import com.github.dakusui.enumerator.tuple.CartesianEnumerator;
+import com.github.dakusui.combinatoradix.tuple.AttrValue;
+import com.github.dakusui.combinatoradix.tuple.CartesianEnumerator;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CartesianEnumeratorAdaptor<T extends Map<U, V>, U, V>
-        implements Iterator<T>, Iterable<T> {
-  private final CartesianEnumerator<U, V> cart;
+    implements Iterator<T>, Iterable<T> {
+  private final CartesianEnumerator<U, V>       cart;
   private final Iterator<List<AttrValue<U, V>>> iterator;
 
   protected CartesianEnumeratorAdaptor(Domains<U, V> domains) {
