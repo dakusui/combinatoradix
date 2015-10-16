@@ -1,4 +1,4 @@
-package com.github.dakusui.enumerator;
+package com.github.dakusui.combinatoradix;
 
 import java.util.*;
 

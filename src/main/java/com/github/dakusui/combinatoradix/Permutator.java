@@ -1,11 +1,9 @@
-package com.github.dakusui.enumerator;
+package com.github.dakusui.combinatoradix;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author hiroshi
- *
  * @param <T>
  */
 public class Permutator<T> extends Enumerator<T> {

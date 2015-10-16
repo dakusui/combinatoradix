@@ -1,12 +1,12 @@
-package com.github.dakusui.enumerator;
+package com.github.dakusui.combinatoradix;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.github.dakusui.enumerator.tuple.AttrValue;
-import com.github.dakusui.enumerator.tuple.CartesianEnumerator;
+import com.github.dakusui.combinatoradix.tuple.AttrValue;
+import com.github.dakusui.combinatoradix.tuple.CartesianEnumerator;
 
 public class CartesianEnumeratorTest {
 

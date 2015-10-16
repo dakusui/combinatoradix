@@ -1,24 +1,17 @@
-package com.github.dakusui.enumerator.tuple;
+package com.github.dakusui.combinatoradix.tuple;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.github.dakusui.combinatoradix.Enumerator;
 
-import com.github.dakusui.enumerator.Enumerator;
+import java.util.*;
 
-public class CartesianEnumerator<T extends Object, U extends Object> extends Enumerator<AttrValue<T, U>> {
+public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
 
   private final ArrayList<T> attrsInReverseOrder;
   private Map<T, List<AttrValue<T, U>>> attrValues = new HashMap<T, List<AttrValue<T, U>>>();
 
   @SuppressWarnings("unchecked")
   public CartesianEnumerator(List<AttrValue<T, U>> attributeValues) {
-    super(attributeValues, countAttributes(attributeValues.toArray(new AttrValue[] {})));
+    super(attributeValues, countAttributes(attributeValues.toArray(new AttrValue[attributeValues.size()])));
     this.attrsInReverseOrder = new ArrayList<T>(this.k);
     for (AttrValue<T, U> cur : this.items) {
       if (!this.attrsInReverseOrder.contains(cur.attr())) {
@@ -31,9 +24,7 @@ public class CartesianEnumerator<T extends Object, U extends Object> extends Enu
 
   private static int countAttributes(AttrValue<Object, Object>[] attributeValues) {
     Set<AttrValue<?, ?>> attrs = new HashSet<AttrValue<?, ?>>();
-    for (AttrValue<?, ?> attrValue : attributeValues) {
-      attrs.add(attrValue);
-    }
+    Collections.addAll(attrs, attributeValues);
     return attrs.size();
   }
 

@@ -1,11 +1,11 @@
-package com.github.dakusui.enumerator;
+package com.github.dakusui.combinatoradix;
 
 import java.util.LinkedHashMap;
 
 public class SimpleCartesianEnumerator<K, V>
     extends CartesianEnumeratorAdaptor<LinkedHashMap<K, V>, K, V> {
   protected SimpleCartesianEnumerator(
-      Domains domains) {
+      Domains<K, V> domains) {
     super(domains);
   }
 

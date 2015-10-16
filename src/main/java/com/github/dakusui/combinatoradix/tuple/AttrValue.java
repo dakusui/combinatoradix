@@ -1,4 +1,4 @@
-package com.github.dakusui.enumerator.tuple;
+package com.github.dakusui.combinatoradix.tuple;
 
 public class AttrValue<T, U> {
   private final T attr;
