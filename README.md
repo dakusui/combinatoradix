@@ -26,7 +26,7 @@ To build this library from source, [Maven][7] 3.0.5 or later will be necessary.
 
 
 ## Building from source
-You can build combinatoradix by getting the source code from github.
+You can build ```combinatoradix``` by getting the source code from github.
 ```
 
     $ git clone https://github.com/dakusui/combinatoradix.git
@@ -66,6 +66,23 @@ Simplest example to enumerate all the possible combinations in a set would be li
         }
       }
 ```
+
+And more importantly **you can pick up Nth partial permutation, combination, or repeated
+combination directly** without iterating upto N.
+
+
+```java
+
+      @Test
+      public void printNthCombinationDirectly() {
+        List<String> list = Arrays.asList("A", "B", "C", "D", "E");
+        System.out.println(new Combinator<>(list, 2).get(3));
+      }
+```
+
+This feature will allow you flexible concurrent enumerations.
+About the benefit of this behaviour, you can refer to "Why you want to use ```combinatoradix```"
+sub-section.
 
 As already mentioned, by changing ```Combinator``` to ```Permutator``` or ```HomogeniousCombinator```,
 you can enumerate partial permutations or repeated combinations respectively.
@@ -167,12 +184,69 @@ The detail is discussed in a Wikipedia article[2].
 
 ## Why you want to use ```combinatoradix```
 
-This approach is clearly slower than other normal 'iterating' algorithm such as used by "combinatorics"[1].
+This approach is clearly slower than other normal 'iterating' algorithm such as 
+used by "[combinatorics][1]".
 But there are still very good reason to use it.
 
-+ Predictable order
-+ Easy to resume
-+ Suitable for parallel execution
++ **Easy to resume**: As long as you have an index (```combinatoradix```
+ classes have ```get(long index): List<T>``` method, which always return the same 
+ same list as long as the same index is given to the same type of object created
+ from the same constructor parameters.), you can stop and resume your operation at 
+ any point. 
++ **Suitable for parallel execution**: For the same reason as the previous one, 
+ you can split a big enumeration task into pieces and execute them concurrently.
++ **Predictable order**: As it will be shown in the example, if you give a list 
+  sorted in dictionary order, the result will be sorted in the dictionary order, 
+  too.
+
+For the first and second point, probably we need some more explanation.
+As mentioned, main classes of ```combinatoradix```, all of which extend ```Enumerator<T>```,
+have ```get(long index): List<T>``` method and ```size(): long``` method.
+
+And it is guaranteed that the method return the same ```List<T>``` 
+if the same initial data set, ```k``` (parameter to specify how many elements
+should be picked up from initial data set), and  ```index`` are given. 
+
+Therefore, for instance, ```combinatoradix``` can answer a question like "There
+are 26 alphabets from A to Z, if we create 5 character words from them. But each
+character can be used only once. What is the 1,000,000th word in dictionary order?".
+
+The answer is ```[D, I, K, H, Q]```.
+And it is a single line job for ```combinatoradix``` once data set is given.
+ 
+```java
+
+      @Test
+      public void print1000000thWord() {
+        List<String> list = Arrays.asList(
+            /*
+             1    2    3    4    5    6    7    8    9    10
+             */
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+            "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+            "U", "V", "W", "X", "Y", "Z"
+            );
+        System.out.println(new Permutator<>(list, 5).get(1_000_000));
+      }
+
+```
+
+Probably other libraries can enumerate all the 5 character length words faster than
+```combinatoradix```. But for figuring out "1,000,000th word", it can be much more 
+efficient and do it instantly.
+ 
+This might look a trivial characteristic, when you want to process all the possible
+patterns, which can easily become huge number, and you have multiple cores (or servers
+ with Hadoop), this becomes useful.
+
+In the above mentioned example, we will have 7,893,600 possible words in total. 
+If you have ```N``` cores (```Core_0```, ```Core_1```, ... ```Core_i```,...```Core_N-1```) 
+and in order to process all of them as fast as possible what you can do is to 
+let ```Core_i``` process words returned by ```get(j)```, where ```j mod N = i```.
+ 
+
+
+
 
 # Examples
 
