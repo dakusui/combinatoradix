@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.github.dakusui</groupId>
-  <artifactId>enumerator</artifactId>
-  <version>0.6.1-SNAPSHOT</version>
+  <artifactId>combinatoradix</artifactId>
+  <version>0.8.0-SNAPSHOT</version>
   <description>A mathematical enumeration library for Java</description>
   <packaging>jar</packaging>
 
