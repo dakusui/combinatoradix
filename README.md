@@ -4,9 +4,58 @@ combinations, and repeated combinations of a set that you give to it in a natura
 Java manner and **suitable for concurrent execution**.
 
 About what permutations, combinations, and repeated combinations are in more detail, 
-please refer to the pages [4] and [5].
+please refer to the Wikipedia articles([4] and [5]).
 
 ```combinatoradix``` is created and maintained by Hiroshi Ukai (dakusui@gmail.com).
+
+
+# Installation
+This library requires [Java][7] 6 or later as its execution environment.
+To build this library from source, [Maven][7] 3.0.5 or later will be necessary.
+
+## Maven coordinate
+
+```xml
+
+    <dependency>
+      <groupId>com.github.dakusui</groupId>
+      <artifactId>combinatoradix</artifactId>
+      <version>0.8.0</version>
+    </dependency>
+```
+
+
+## Building from source
+You can build combinatoradix by getting the source code from github.
+```
+
+    $ git clone https://github.com/dakusui/combinatoradix.git
+    ...
+    $ cd combinatoradix
+    ...
+    $ mvn package
+    ...
+    $
+```
+
+You will find a compiled jar file ```combinatoradix-{X.Y.Z}-SNAPSHOT.jar``` under
+ ```target/``` directory.
+
+# How to use
+There are 3 main classes in this library,
+
++ Permutator (com.github.dakusui.combinatoradix)
++ Combinator (com.github.dakusui.combinatoradix)
++ HomogeniousCombinator (com.github.dakusui.combinatoradix)
+
+All of them can be used in the same manner.
+Through the constructor of ```Permutator```, ```Combinator```, or ```HomogeniousCombinator```
+you can specify a list of values to be enumerated and how many elements in the set 
+should be chosen at once. And then you can iterate all the possible 
+partial permutations, combinations, or repeated combinations respectively.
+
+
+
 
 # How it works and why you want to use ```combinatoradix```
 ## How it works
@@ -109,47 +158,6 @@ But there are still very good reason to use it.
 + Predictable order
 + Easy to resume
 + Suitable for parallel execution
-
-
-# Installation
-## Maven coordinate
-
-```xml
-
-    <dependency>
-      <groupId>com.github.dakusui</groupId>
-      <artifactId>combinatoradix</artifactId>
-      <version>0.8.0</version>
-    </dependency>
-```
-
-
-## Building from source
-You can build combinatoradix by getting the source code from github.
-```
-
-    $ git clone https://github.com/dakusui/combinatoradix.git
-    ...
-    $ cd combinatoradix
-    ...
-    $ mvn install
-    ...
-    $
-```
-
-
-# How to use
-There are 3 main classes in this library,
-
-+ Permutator (com.github.dakusui.combinatoradix)
-+ Combinator (com.github.dakusui.combinatoradix)
-+ HomogeniousCombinator (com.github.dakusui.combinatoradix)
-
-All of them can be used in the same manner as mentioned above.
-Through the constructor you can give the instance a set of values to be enumerated 
-how many elements in the set should be chosen at once to constructors of Permutator, 
-Combinator, or HomogeniousCombinator. And then you can iterate all the possible 
-permutations, combinations, or repeated combinations respectively.
 
 # Examples
 
@@ -365,6 +373,8 @@ Of course you can use the same technique for combinations and repeated combinati
 * [4] "Permutation", Wikipedia.org
 * [5] "Combination", Wikipedia.org
 * [6] "mapreduce - Simple Java Map/Reduce framework"
+* [7] "Java SE downloads", Oracle
+* [8] "Maven - Download Apache Maven"
 
 [1]: https://github.com/ctrimble/combinatorics
 [2]: https://en.wikipedia.org/wiki/Factorial_number_system
@@ -372,6 +382,8 @@ Of course you can use the same technique for combinations and repeated combinati
 [4]: http://en.wikipedia.org/wiki/Permutation
 [5]: http://en.wikipedia.org/wiki/Combination
 [6]: http://stackoverflow.com/questions/5260212/simple-java-map-reduce-framework
+[7]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[8]: https://maven.apache.org/download.cgi
 
 # Copyright and license
 
