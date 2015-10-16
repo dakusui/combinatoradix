@@ -54,7 +54,22 @@ you can specify a list of values to be enumerated and how many elements in the s
 should be chosen at once. And then you can iterate all the possible 
 partial permutations, combinations, or repeated combinations respectively.
 
+Simplest example to enumerate all the possible combinations in a set would be like following.
 
+```java
+
+      @Test
+      public void printCombinations() {
+        List<String> list = Arrays.asList("A", "B", "C", "D", "E");
+        for (List<String> each : new Combinator<>(list, 2)) {
+          System.out.println(each);
+        }
+      }
+```
+
+As already mentioned, by changing ```Combinator``` to ```Permutator``` or ```HomogeniousCombinator```,
+you can enumerate partial permutations or repeated combinations respectively.
+Please refer to "Examples" sections for more samples.
 
 
 # How it works and why you want to use ```combinatoradix```
@@ -217,10 +232,9 @@ class from ```Permutator``` to ```Combinator```.
 ```java
 
       @Test
-      public void printPartialPermutations() {
+      public void printCombinations() {
         List<String> list = Arrays.asList("A", "B", "C", "D", "E");
-
-        for (List<String> each : new Permutator<>(list, 2)) {
+        for (List<String> each : new Combinator<>(list, 2)) {
           System.out.println(each);
         }
       }
@@ -241,18 +255,17 @@ Same as ```Permutator``` the output is sorted in dictionary order.
     [C, E]
     [D, E]
 ```
+
 ## Enumerating repeated combinations  (Java7)
 
 The class to be used for repeated combinations is ```HomogeniousCombinator```.
 
 ```java
 
-      @Test
       public void printRepeatedCombinations() {
         List<String> list = Arrays.asList("A", "B", "C", "D", "E");
-
-        for (List<String> strings : new HomogeniousCombinator<>(list, 2)) {
-          System.out.println(strings);
+        for (List<String> each : new HomogeniousCombinator<>(list, 2)) {
+          System.out.println(each);
         }
       }
 ```
