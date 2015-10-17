@@ -8,7 +8,12 @@ import org.junit.Test;
 import com.github.dakusui.combinatoradix.tuple.AttrValue;
 import com.github.dakusui.combinatoradix.tuple.CartesianEnumerator;
 
+import static org.junit.Assert.assertEquals;
+
 public class CartesianEnumeratorTest {
+  static {
+    // System.setProperty("COMBINATORADIX_DEBUG", "true");
+  }
 
   @Test
   public void test() {
@@ -17,12 +22,15 @@ public class CartesianEnumeratorTest {
     attrValues.add(attrValue("key1", "B"));
     attrValues.add(attrValue("key2", "a"));
     attrValues.add(attrValue("key2", "b"));
+    attrValues.add(attrValue("key3", "X"));
+    attrValues.add(attrValue("key3", "Y"));
     @SuppressWarnings("unchecked")
     Enumerator<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(attrValues);
     int i = 0;
     for (List<AttrValue<String, String>> cur : enumerator) {
-      System.out.println(String.format("%03d %s", i++, cur));
+      Utils.stdout.println(String.format("%03d %s", i++, cur));
     }
+    assertEquals(8, enumerator.size());
   }
 
   static AttrValue<String, String> attrValue(String attr, String value) {

@@ -243,14 +243,13 @@ In the above mentioned example, we will have 7,893,600 possible words in total.
 If you have ```N``` cores (```Core_0```, ```Core_1```, ... ```Core_i```,...```Core_N-1```) 
 and in order to process all of them as fast as possible what you can do is to 
 let ```Core_i``` process words returned by ```get(j)```, where ```j mod N = i```.
- 
-
-
-
 
 # Examples
+Most of examples shown in this section is written for Java 7. But by just 
+changing ```<>``` into ```<String>``` (or other types depending on contexts),
+they should work.
 
-## Enumerating partial permutations
+## Enumerating partial permutations (Java7)
 To enumerate all the partial permutations, you can use "Permutator" class.
 An example follows.
 
