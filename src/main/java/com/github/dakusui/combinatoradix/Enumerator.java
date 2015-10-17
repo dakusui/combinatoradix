@@ -22,7 +22,17 @@ public abstract class Enumerator<T> implements Iterable<List<T>> {
   }
 
   static long nCk(long n, long k) {
-    return nPk(n, k) / factorial(k);
+    long ret = 1;
+    long j = 1;
+    for (long i = n; i > n - k; i--) {
+      if (i > Long.MAX_VALUE / ret) {
+        throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sP%s: %d * %d", n, k, ret, i));
+      }
+      ret *= i;
+      ret /= j;
+      j++;
+    }
+    return ret;
   }
 
   static long nHk(int n, int k) {
@@ -42,9 +52,9 @@ public abstract class Enumerator<T> implements Iterable<List<T>> {
 
   private final long enumSize;
 
-  protected int k;
+  protected final int k;
 
-  protected List<T> items;
+  protected final List<T> items;
 
   protected Enumerator(List<T> items, int k) {
     this.items = items;

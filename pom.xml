@@ -7,8 +7,8 @@
   <description>A mathematical enumeration library for Java</description>
   <packaging>jar</packaging>
 
-  <name>enumerator</name>
-  <url>https://github.com/dakusui/enumerator</url>
+  <name>combinatoradix</name>
+  <url>https://github.com/dakusui/combinatoradix</url>
 
   <licenses>
     <license>
@@ -19,9 +19,9 @@
   </licenses>
   
   <scm>
-    <connection>scm:git:git://github.com/dakusui/enumerator.git</connection>
-    <developerConnection>scm:git:git@github.com:dakusui/enumerator.git</developerConnection>
-    <url>http://github.com/dakusui/enumerator</url>
+    <connection>scm:git:git://github.com/dakusui/combinatoradix.git</connection>
+    <developerConnection>scm:git:git@github.com:dakusui/combinatorix.git</developerConnection>
+    <url>http://github.com/dakusui/combinatorix</url>
     <tag>HEAD</tag>
   </scm>
 
