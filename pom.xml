@@ -23,9 +23,9 @@
     <scm>
         <connection>scm:git:git://github.com/dakusui/combinatoradix.git
         </connection>
-        <developerConnection>scm:git:git@github.com:dakusui/combinatorix.git
+        <developerConnection>scm:git:git@github.com:dakusui/combinatoradix.git
         </developerConnection>
-        <url>http://github.com/dakusui/combinatorix</url>
+        <url>http://github.com/dakusui/combinatoradix</url>
         <tag>HEAD</tag>
     </scm>
 
