@@ -4,100 +4,70 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public abstract class Enumerator<T> implements Iterable<List<T>> {
+public interface Enumerator<T> extends Iterable<List<T>> {
+  List<T> get(long index);
+  long size();
 
-  static long factorial(long n) {
-    if (n < 0) {
-      String msg = "n cannot be less than 0. (" + n + ")";
-      throw new RuntimeException(msg);
-    }
-    if (n == 0) {
-      return 1;
-    }
-    long ret = 1;
-    for (long i = n; i > 1; i--) {
-      ret *= i;
-    }
-    return ret;
-  }
+  abstract class Base<T> implements Enumerator<T>, Iterable<List<T>> {
 
-  static long nCk(long n, long k) {
-    long ret = 1;
-    long j = 1;
-    for (long i = n; i > n - k; i--) {
-      if (i > Long.MAX_VALUE / ret) {
-        throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sP%s: %d * %d", n, k, ret, i));
+    private final long enumSize;
+
+    protected final int k;
+
+    protected final List<? extends T> items;
+
+    /**
+     * Creates an object of this class.
+     *
+     * @param items A list of elements from which returned value of {@code get(int)} will be chosen.
+     * @param k Number of elements chosen from {@code items}
+     * @param size Number of lists this object can return.
+     */
+    protected Base(List<? extends T> items, int k, long size) {
+      this.items = items;
+      this.k = k;
+      this.enumSize = size;
+    }
+
+    @Override
+    public List<T> get(long index) {
+      if (index < enumSize) {
+        return getElement(index);
       }
-      ret *= i;
-      ret /= j;
-      j++;
+      String msg = String.format("Index (%d) must be less than %d", index, this.enumSize);
+      throw new IndexOutOfBoundsException(msg);
     }
-    return ret;
-  }
 
-  static long nHk(int n, int k) {
-    return nCk(n + k - 1, k);
-  }
+    protected abstract List<T> getElement(long index);
 
-  static long nPk(long n, long k) {
-    long ret = 1;
-    for (long i = n; i > n - k; i--) {
-      if (i > Long.MAX_VALUE / ret) {
-        throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sP%s: %d * %d", n, k, ret, i));
-      }
-      ret *= i;
+    final public long size() {
+      return this.enumSize;
     }
-    return ret;
-  }
 
-  private final long enumSize;
+    @Override
+    public Iterator<List<T>> iterator() {
+      return new Iterator<List<T>>() {
+        private long index;
 
-  protected final int k;
-
-  protected final List<T> items;
-
-  protected Enumerator(List<T> items, int k) {
-    this.items = items;
-    this.k = k;
-    this.enumSize = size();
-  }
-
-  public List<T> get(long index) {
-    if (index < enumSize) {
-      return get_Protected(index);
-    }
-    String msg = String.format("Index (%d) must be less than %d", index, this.enumSize);
-    throw new IndexOutOfBoundsException(msg);
-  }
-
-  protected abstract List<T> get_Protected(long index);
-
-  public abstract long size();
-
-  @Override
-  public Iterator<List<T>> iterator() {
-    return new Iterator<List<T>>() {
-      private long index;
-
-      @Override
-      public boolean hasNext() {
-        return this.index < Enumerator.this.enumSize;
-      }
-
-      @Override
-      public List<T> next() {
-        if (!hasNext()) {
-          String message = "No more element in this enumberator.";
-          throw new NoSuchElementException(message);
+        @Override
+        public boolean hasNext() {
+          return this.index < Base.this.enumSize;
         }
-        return get_Protected(this.index++);
-      }
 
-      @Override
-      public void remove() {
-        String message = "This operation is not supported.";
-        throw new UnsupportedOperationException(message);
-      }
-    };
+        @Override
+        public List<T> next() {
+          if (!hasNext()) {
+            String message = "No more element in this enumberator.";
+            throw new NoSuchElementException(message);
+          }
+          return getElement(this.index++);
+        }
+
+        @Override
+        public void remove() {
+          throw new UnsupportedOperationException("This operation is not supported.");
+        }
+      };
+    }
   }
 }
