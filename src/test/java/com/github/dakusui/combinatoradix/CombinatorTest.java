@@ -2,12 +2,25 @@ package com.github.dakusui.combinatoradix;
 
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CombinatorTest extends EnumeratorTestBase {
+
+	@Test
+	public void test_empty() {
+		// Empty set should result in empty iterator immediately
+		Iterator<List<String>> i = new Combinator<String>(Collections.<String>emptyList(), 0).iterator();
+		assertTrue(i.hasNext());
+		assertEquals(Collections.emptyList(), i.next());
+		assertFalse(i.hasNext());
+	}
+
 	@Test
 	public void test_nC0() {
 		Iterator<List<String>> combinator = new Combinator<String>(testset1(), 0).iterator();

@@ -180,7 +180,7 @@ And it will be inserted in ```tmp```([Christopher, Derek, Elizabeth]).
 
 
 Of course we can generalize this number system so that we can apply it to any P(n, k).
-The detail is discussed in a Wikipedia article[2].
+The detail is discussed in a Wikipedia [article][2].
 
 ## Why you want to use ```combinatoradix```
 

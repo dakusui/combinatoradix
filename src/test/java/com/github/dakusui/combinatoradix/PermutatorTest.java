@@ -2,12 +2,24 @@ package com.github.dakusui.combinatoradix;
 
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PermutatorTest extends EnumeratorTestBase {
+  @Test
+  public void test_empty() {
+    // Empty set should result in empty iterator immediately
+    Iterator<List<String>> i = new Permutator<String>(Collections.<String>emptyList(), 0).iterator();
+    assertTrue(i.hasNext());
+    assertEquals(Collections.emptyList(), i.next());
+    assertFalse(i.hasNext());
+  }
+
   @Test
   public void test_nP0() {
     Iterator<List<String>> p = new Permutator<String>(testset1(), 0).iterator();

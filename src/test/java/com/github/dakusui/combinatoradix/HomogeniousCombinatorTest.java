@@ -2,13 +2,25 @@ package com.github.dakusui.combinatoradix;
 
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class HomogeniousCombinatorTest extends EnumeratorTestBase {
+	@Test
+	public void test_empty() {
+		// Empty set should result in empty iterator immediately
+		Iterator<List<String>> i = new HomogeniousCombinator<String>(Collections.<String>emptyList(), 0).iterator();
+		assertTrue(i.hasNext());
+		assertEquals(Collections.emptyList(), i.next());
+		assertFalse(i.hasNext());
+	}
+
 	@Test
 	public void test_nH1() {
 		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 1).iterator();

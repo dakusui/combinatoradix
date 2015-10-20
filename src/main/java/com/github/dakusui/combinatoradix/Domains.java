@@ -3,35 +3,43 @@ package com.github.dakusui.combinatoradix;
 import java.util.*;
 
 public interface Domains<T, U> {
-  public List<T> getDomainNames();
+	List<T> getDomainNames();
 
-  public List<U> getDomain(T domainName);
+	List<U> getDomain(T domainName);
 
-  static class DomainsImpl<T, U> extends LinkedHashMap<T, List<U>>
-      implements Domains<T, U> {
-    @Override public List<T> getDomainNames() {
-      return new LinkedList<T>(this.keySet());
-    }
+	class DomainsImpl<T, U> extends LinkedHashMap<T, List<U>>
+			implements Domains<T, U> {
+		@Override public List<T> getDomainNames() {
+			return new LinkedList<T>(this.keySet());
+		}
 
-    @Override public List<U> getDomain(T domainName) {
-      return Collections.unmodifiableList(this.get(domainName));
-    }
-  }
+		@Override public List<U> getDomain(T domainName) {
+			return Collections.unmodifiableList(this.get(domainName));
+		}
+	}
 
-  public static class Builder<T, U> {
-    private LinkedHashMap<T, List<U>> map = new LinkedHashMap<T, List<U>>();
+	class Builder<T, U> {
+		private final Map<T, List<U>> map;
 
-    public Builder addDomain(T key, U... values) {
-      this.map.put(key, Arrays.asList(values));
-      return this;
-    }
+		public Builder() {
+			this(new LinkedHashMap<T, List<U>>());
+		}
 
-    public Domains<T, U> build() {
-      DomainsImpl<T, U> ret = new DomainsImpl<T, U>();
-      for (T k : this.map.keySet()) {
-        ret.put(k, this.map.get(k));
-      }
-      return ret;
-    }
-  }
+		public Builder(Map<T, List<U>> map) {
+			this.map = map;
+		}
+
+		public Builder<T, U> addDomain(T key, U... values) {
+			this.map.put(key, Arrays.asList(values));
+			return this;
+		}
+
+		public Domains<T, U> build() {
+			DomainsImpl<T, U> ret = new DomainsImpl<T, U>();
+			for (T k : this.map.keySet()) {
+				ret.put(k, this.map.get(k));
+			}
+			return ret;
+		}
+	}
 }
