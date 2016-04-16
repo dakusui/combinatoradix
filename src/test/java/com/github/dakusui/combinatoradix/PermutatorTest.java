@@ -116,6 +116,6 @@ public class PermutatorTest extends EnumeratorTestBase {
       assertEquals(3, entry.size());
       i++;
     }
-    assertEquals(Enumerator.nPk(3, 3), i);
+    assertEquals(Enumerators.nPk(3, 3), i);
   }
 }

@@ -65,6 +65,6 @@ public class BigNumberTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test100C50() {
-        Enumerator.nCk(100, 50);
+        Enumerators.nCk(100, 50);
     }
 }
