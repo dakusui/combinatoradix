@@ -7,7 +7,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class EnumeratorErrorTest {
-	Enumerator<String> enumerator = new Permutator<String>(Collections.singletonList("Hello"), 1);
+	Enumerator.Base<String> enumerator = new Permutator<String>(Collections.singletonList("Hello"), 1);
 
 	@Test(expected = NoSuchElementException.class)
 	public void goOverLimitByNextMethod() {

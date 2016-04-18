@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-public class Utils {
+public class TestUtils {
   public static final PrintStream stdout = createStdOut();
 
   private static PrintStream createStdOut() {
@@ -19,6 +19,6 @@ public class Utils {
     }
   }
 
-  private Utils() {
+  private TestUtils() {
   }
 }

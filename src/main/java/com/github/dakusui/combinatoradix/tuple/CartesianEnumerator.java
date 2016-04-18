@@ -4,21 +4,25 @@ import com.github.dakusui.combinatoradix.Enumerator;
 
 import java.util.*;
 
-public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
+public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> {
 
   private final ArrayList<T> attrsInReverseOrder;
   private Map<T, List<AttrValue<T, U>>> attrValues = new HashMap<T, List<AttrValue<T, U>>>();
 
   @SuppressWarnings("unchecked")
   public CartesianEnumerator(List<AttrValue<T, U>> attributeValues) {
-    super(attributeValues, countAttributes(attributeValues.toArray(new AttrValue[attributeValues.size()])));
+    super(
+        attributeValues,
+        countAttributes(attributeValues.toArray(new AttrValue[attributeValues.size()])),
+        calculateSize(attributeValues)
+    );
     this.attrsInReverseOrder = new ArrayList<T>(this.k);
     for (AttrValue<T, U> cur : this.items) {
       if (!this.attrsInReverseOrder.contains(cur.attr())) {
         this.attrsInReverseOrder.add(cur.attr());
       }
     }
-    this.attrValues = attrValues();
+    this.attrValues = attrValues(attributeValues);
     Collections.reverse(this.attrsInReverseOrder);
   }
 
@@ -29,7 +33,7 @@ public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
   }
 
   @Override
-  protected List<AttrValue<T, U>> get_Protected(long index) {
+  protected List<AttrValue<T, U>> getElement(long index) {
     List<AttrValue<T, U>> ret = new LinkedList<AttrValue<T, U>>();
     for (T key : this.attrsInReverseOrder) {
       List<AttrValue<T, U>> values = this.attrValues.get(key);
@@ -42,10 +46,9 @@ public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
     return ret;
   }
 
-  @Override
-  public long size() {
+  private static <T, U> long calculateSize(List<AttrValue<T, U>> attributeValues) {
     long ret = 1;
-    for (List<AttrValue<T, U>> values : attrValues().values()) {
+    for (List<AttrValue<T, U>> values : attrValues(attributeValues).values()) {
       long sz = values.size();
       if (sz > Long.MAX_VALUE / ret) {
         throw new IllegalArgumentException(String.format("Overflow. Too many attributes or attribute values: %d * %d", ret, sz));
@@ -56,9 +59,9 @@ public class CartesianEnumerator<T, U> extends Enumerator<AttrValue<T, U>> {
     return ret;
   }
 
-  private Map<T, List<AttrValue<T, U>>> attrValues() {
+  private static <T, U> Map<T, List<AttrValue<T, U>>> attrValues(List<AttrValue<T, U>> attributeValues) {
     Map<T, List<AttrValue<T, U>>> ret = new HashMap<T, List<AttrValue<T, U>>>();
-    for (AttrValue<T, U> cur : this.items) {
+    for (AttrValue<T, U> cur : attributeValues) {
       List<AttrValue<T, U>> values = ret.get(cur.attr());
       if (values == null) {
         values = new LinkedList<AttrValue<T, U>>();

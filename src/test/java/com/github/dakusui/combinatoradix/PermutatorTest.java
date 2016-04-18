@@ -110,12 +110,12 @@ public class PermutatorTest extends EnumeratorTestBase {
 
   @Test
   public void test_forEach() {
-    Enumerator<String> p = new Permutator<String>(testset2(), 3);
+    Enumerator.Base<String> p = new Permutator<String>(testset2(), 3);
     int i = 0;
     for (List<String> entry : p) {
       assertEquals(3, entry.size());
       i++;
     }
-    assertEquals(Enumerators.nPk(3, 3), i);
+    assertEquals(Utils.nPk(3, 3), i);
   }
 }

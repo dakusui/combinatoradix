@@ -13,7 +13,6 @@ public abstract class CartesianEnumeratorAdaptor<T extends Map<U, V>, U, V>
     private final CartesianEnumerator<U, V> cart;
 
     protected CartesianEnumeratorAdaptor(Domains<U, V> domains) {
-
         this.cart = new CartesianEnumerator<U, V>(domains2AttrValues(domains));
     }
 
