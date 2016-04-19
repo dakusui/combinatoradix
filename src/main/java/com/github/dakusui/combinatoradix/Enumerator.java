@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public interface Enumerator<T> {
+public interface Enumerator<T> extends Iterable<List<T>> {
   List<T> get(long index);
   long size();
 

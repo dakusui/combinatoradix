@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class ShufflerTest {
   @Test
   public void shuffler() {
-    Enumerator.Base<String> shuffler =  Enumerators.shuffler(new LinkedList<String>(Arrays.asList("1", "2", "3")), 3, 4649);
+    Enumerator<String> shuffler =  Enumerators.shuffler(new LinkedList<String>(Arrays.asList("1", "2", "3")), 3, 4649);
     assertEquals(3, shuffler.size());
     for (Object each : shuffler) {
       System.out.println(each);

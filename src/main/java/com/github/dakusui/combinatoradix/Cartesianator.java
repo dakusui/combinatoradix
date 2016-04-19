@@ -1,9 +1,6 @@
 package com.github.dakusui.combinatoradix;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Cartesianator<E> implements Enumerator<E> {
   private final List<List<? extends E>> sets;
@@ -48,10 +45,14 @@ public class Cartesianator<E> implements Enumerator<E> {
     return ret;
   }
 
-
-  protected Cartesianator(List<List<? extends E>> sets) {
+  protected Cartesianator(List<? extends List<? extends E>> sets) {
     this.sets = new ArrayList<List<? extends E>>(sets);
     Collections.reverse(this.sets);
     this.size = calculateSize(sets);
+  }
+
+  @Override
+  public Iterator<List<E>> iterator() {
+    return null;
   }
 }
