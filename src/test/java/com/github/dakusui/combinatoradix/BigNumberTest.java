@@ -22,8 +22,8 @@ public class BigNumberTest {
         System.out.println("-:" + Long.MAX_VALUE);
         try {
             for (int i = 0; i < dataSet.size(); i++) {
-                Enumerator<String> e = new Permutator<String>(dataSet, i);
-                Utils.stdout.println(i + ":" + e.size());
+                Enumerator.Base<String> e = new Permutator<String>(dataSet, i);
+                TestUtils.stdout.println(i + ":" + e.size());
             }
         } catch (IllegalArgumentException e) {
             assertEquals("Overflow. Too big numbers are used 26P15: 841941782922240000 * 12", e.getMessage());
@@ -35,16 +35,16 @@ public class BigNumberTest {
     @Test
     public void testCombinator() {
         for (int i = 0; i < dataSet.size(); i++) {
-            Enumerator<String> e = new Combinator<String>(dataSet, i);
-            Utils.stdout.println(i + ":" + e.size());
+            Enumerator.Base<String> e = new Combinator<String>(dataSet, i);
+            TestUtils.stdout.println(i + ":" + e.size());
         }
     }
 
     @Test
     public void testRepeatedCombinator() {
         for (int i = 0; i < dataSet.size(); i++) {
-            Enumerator<String> e = new HomogeniousCombinator<String>(dataSet, i);
-            Utils.stdout.println(i + ":" + e.size());
+            Enumerator.Base<String> e = new HomogeniousCombinator<String>(dataSet, i);
+            TestUtils.stdout.println(i + ":" + e.size());
         }
     }
 
@@ -65,6 +65,6 @@ public class BigNumberTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test100C50() {
-        Enumerator.nCk(100, 50);
+        Utils.nCk(100, 50);
     }
 }

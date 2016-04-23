@@ -21,12 +21,4 @@ public class EnumeratorTestBase {
 		ret.add("C");
 		return ret;
 	}
-
-	static <T> List<T> toList(T... args) {
-		List<T> ret = new ArrayList<T>();
-		for (T v : args) {
-			ret.add(v);
-		}
-		return ret;
-	}
 }

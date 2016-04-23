@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -25,51 +26,51 @@ public class HomogeniousCombinatorTest extends EnumeratorTestBase {
 	public void test_nH1() {
 		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 1).iterator();
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A"), homogeniousCombinator.next());
+		assertEquals(asList("A"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("B"), homogeniousCombinator.next());
+		assertEquals(asList("B"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("C"), homogeniousCombinator.next());
+		assertEquals(asList("C"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("D"), homogeniousCombinator.next());
+		assertEquals(asList("D"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("E"), homogeniousCombinator.next());
+		assertEquals(asList("E"), homogeniousCombinator.next());
 		assertEquals(false, homogeniousCombinator.hasNext());
 	}
 
 	@Test
 	public void test_nH2() {
-		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 2).iterator();
+		Iterator<List<String>> homogeniousCombinator = Enumerators.homogeniousCombinator(testset1(), 2).iterator();
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A", "A"), homogeniousCombinator.next());
+		assertEquals(asList("A", "A"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A", "B"), homogeniousCombinator.next());
+		assertEquals(asList("A", "B"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A", "C"), homogeniousCombinator.next());
+		assertEquals(asList("A", "C"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A", "D"), homogeniousCombinator.next());
+		assertEquals(asList("A", "D"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("A", "E"), homogeniousCombinator.next());
+		assertEquals(asList("A", "E"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("B", "B"), homogeniousCombinator.next());
+		assertEquals(asList("B", "B"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("B", "C"), homogeniousCombinator.next());
+		assertEquals(asList("B", "C"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("B", "D"), homogeniousCombinator.next());
+		assertEquals(asList("B", "D"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("B", "E"), homogeniousCombinator.next());
+		assertEquals(asList("B", "E"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("C", "C"), homogeniousCombinator.next());
+		assertEquals(asList("C", "C"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("C", "D"), homogeniousCombinator.next());
+		assertEquals(asList("C", "D"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("C", "E"), homogeniousCombinator.next());
+		assertEquals(asList("C", "E"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("D", "D"), homogeniousCombinator.next());
+		assertEquals(asList("D", "D"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("D", "E"), homogeniousCombinator.next());
+		assertEquals(asList("D", "E"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());
-		assertEquals(toList("E", "E"), homogeniousCombinator.next());
+		assertEquals(asList("E", "E"), homogeniousCombinator.next());
 		assertEquals(false, homogeniousCombinator.hasNext());
 	}
 

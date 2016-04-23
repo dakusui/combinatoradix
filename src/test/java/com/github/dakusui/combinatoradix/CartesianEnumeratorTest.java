@@ -26,10 +26,10 @@ public class CartesianEnumeratorTest {
         attrValues.add(attrValue("key3", "X"));
         attrValues.add(attrValue("key3", "Y"));
         @SuppressWarnings("unchecked")
-        Enumerator<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(attrValues);
+        Enumerator.Base<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(attrValues);
         int i = 0;
         for (List<AttrValue<String, String>> cur : enumerator) {
-            Utils.stdout.println(String.format("%03d %s", i++, cur));
+            TestUtils.stdout.println(String.format("%03d %s", i++, cur));
         }
         assertEquals(8, enumerator.size());
     }

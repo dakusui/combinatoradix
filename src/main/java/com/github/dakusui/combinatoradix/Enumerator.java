@@ -1,86 +1,79 @@
 package com.github.dakusui.combinatoradix;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public abstract class Enumerator<T> implements Iterable<List<T>> {
-    public static long nCk(long n, long k) {
-        long ret = 1;
-        long j = 1;
-        for (long i = n; i > n - k; i--) {
-            if (i > Long.MAX_VALUE / ret) {
-                throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sC%s: %d * %d", n, k, ret, i));
-            }
-            ret *= i;
-            ret /= j;
-            j++;
-        }
-        return ret;
+public interface Enumerator<T> extends Iterable<List<T>> {
+  List<T> get(long index);
+  long size();
+  class Iterator<T> implements java.util.Iterator<List<T>> {
+    private final Enumerator<T> enumerator;
+    private long index;
+
+    public Iterator(Enumerator<T> enumerator) {
+      this.enumerator = enumerator;
+      this.index = 0;
     }
 
-    public static long nHk(int n, int k) {
-        return nCk(n + k - 1, k);
+    @Override
+    public boolean hasNext() {
+      return this.index < enumerator.size();
     }
 
-    public static long nPk(long n, long k) {
-        long ret = 1;
-        for (long i = n; i > n - k; i--) {
-            if (i > Long.MAX_VALUE / ret) {
-                throw new IllegalArgumentException(String.format("Overflow. Too big numbers are used %sP%s: %d * %d", n, k, ret, i));
-            }
-            ret *= i;
-        }
-        return ret;
+    @Override
+    public List<T> next() {
+      if (!hasNext()) {
+        String message = "No more element in this enumberator.";
+        throw new NoSuchElementException(message);
+      }
+      return enumerator.get(this.index++);
     }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("This operation is not supported.");
+    }
+  }
+
+  abstract class Base<T> implements Enumerator<T>, Iterable<List<T>> {
 
     private final long enumSize;
 
     protected final int k;
 
-    protected final List<T> items;
+    protected final List<? extends T> items;
 
-    protected Enumerator(List<T> items, int k) {
-        this.items = items;
-        this.k = k;
-        this.enumSize = size();
+    /**
+     * Creates an object of this class.
+     *
+     * @param items A list of elements from which returned value of {@code get(int)} will be chosen.
+     * @param k Number of elements chosen from {@code items}
+     * @param size Number of lists this object can return.
+     */
+    protected Base(List<? extends T> items, int k, long size) {
+      this.items = items;
+      this.k = k;
+      this.enumSize = size;
     }
-
-    public List<T> get(long index) {
-        if (index < enumSize) {
-            return get_Protected(index);
-        }
-        String msg = String.format("Index (%d) must be less than %d", index, this.enumSize);
-        throw new IndexOutOfBoundsException(msg);
-    }
-
-    protected abstract List<T> get_Protected(long index);
-
-    public abstract long size();
 
     @Override
-    public Iterator<List<T>> iterator() {
-        return new Iterator<List<T>>() {
-            private long index;
-
-            @Override
-            public boolean hasNext() {
-                return this.index < Enumerator.this.enumSize;
-            }
-
-            @Override
-            public List<T> next() {
-                if (!hasNext()) {
-                    String message = "No more element in this enumberator.";
-                    throw new NoSuchElementException(message);
-                }
-                return get_Protected(this.index++);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("This operation is not supported.");
-            }
-        };
+    public List<T> get(long index) {
+      if (index < enumSize) {
+        return getElement(index);
+      }
+      String msg = String.format("Index (%d) must be less than %d", index, this.enumSize);
+      throw new IndexOutOfBoundsException(msg);
     }
+
+    protected abstract List<T> getElement(long index);
+
+    final public long size() {
+      return this.enumSize;
+    }
+
+    @Override
+    public java.util.Iterator<List<T>> iterator() {
+      return new Iterator<T>(this);
+    }
+  }
 }
