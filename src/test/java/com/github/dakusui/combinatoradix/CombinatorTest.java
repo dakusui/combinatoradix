@@ -74,7 +74,7 @@ public class CombinatorTest extends EnumeratorTestBase {
 
   @Test
   public void test_nC3() {
-    Iterator<List<String>> combinator = new Combinator<String>(testset1(), 3).iterator();
+    Iterator<List<String>> combinator = Enumerators.combinator(testset1(), 3).iterator();
     assertEquals(true, combinator.hasNext());
     assertEquals(asList("A", "B", "C"), combinator.next());
     assertEquals(true, combinator.hasNext());
