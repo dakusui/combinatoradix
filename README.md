@@ -20,7 +20,7 @@ To build this library from source, [Maven][7] 3.0.5 or later will be necessary.
     <dependency>
       <groupId>com.github.dakusui</groupId>
       <artifactId>combinatoradix</artifactId>
-      <version>0.8.1</version>
+      <version>0.8.2</version>
     </dependency>
 ```
 
