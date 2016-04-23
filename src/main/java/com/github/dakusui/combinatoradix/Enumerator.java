@@ -1,12 +1,39 @@
 package com.github.dakusui.combinatoradix;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public interface Enumerator<T> extends Iterable<List<T>> {
   List<T> get(long index);
   long size();
+  class Iterator<T> implements java.util.Iterator<List<T>> {
+    private final Enumerator<T> enumerator;
+    private long index;
+
+    public Iterator(Enumerator<T> enumerator) {
+      this.enumerator = enumerator;
+      this.index = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return this.index < enumerator.size();
+    }
+
+    @Override
+    public List<T> next() {
+      if (!hasNext()) {
+        String message = "No more element in this enumberator.";
+        throw new NoSuchElementException(message);
+      }
+      return enumerator.get(this.index++);
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("This operation is not supported.");
+    }
+  }
 
   abstract class Base<T> implements Enumerator<T>, Iterable<List<T>> {
 
@@ -45,29 +72,8 @@ public interface Enumerator<T> extends Iterable<List<T>> {
     }
 
     @Override
-    public Iterator<List<T>> iterator() {
-      return new Iterator<List<T>>() {
-        private long index;
-
-        @Override
-        public boolean hasNext() {
-          return this.index < Base.this.enumSize;
-        }
-
-        @Override
-        public List<T> next() {
-          if (!hasNext()) {
-            String message = "No more element in this enumberator.";
-            throw new NoSuchElementException(message);
-          }
-          return getElement(this.index++);
-        }
-
-        @Override
-        public void remove() {
-          throw new UnsupportedOperationException("This operation is not supported.");
-        }
-      };
+    public java.util.Iterator<List<T>> iterator() {
+      return new Iterator<T>(this);
     }
   }
 }

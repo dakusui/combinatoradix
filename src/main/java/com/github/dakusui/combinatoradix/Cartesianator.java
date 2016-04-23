@@ -52,7 +52,7 @@ public class Cartesianator<E> implements Enumerator<E> {
   }
 
   @Override
-  public Iterator<List<E>> iterator() {
-    return null;
+  public java.util.Iterator<List<E>> iterator() {
+    return new Enumerator.Iterator<E>(this);
   }
 }

@@ -40,7 +40,7 @@ public class HomogeniousCombinatorTest extends EnumeratorTestBase {
 
 	@Test
 	public void test_nH2() {
-		Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 2).iterator();
+		Iterator<List<String>> homogeniousCombinator = Enumerators.homogeniousCombinator(testset1(), 2).iterator();
 		assertEquals(true, homogeniousCombinator.hasNext());
 		assertEquals(asList("A", "A"), homogeniousCombinator.next());
 		assertEquals(true, homogeniousCombinator.hasNext());

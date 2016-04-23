@@ -93,7 +93,7 @@ public class PermutatorTest extends EnumeratorTestBase {
 
   @Test
   public void test_nPn() {
-    Iterator<List<String>> p = new Permutator<String>(testset2(), 3).iterator();
+    Iterator<List<String>> p = Enumerators.permutator(testset2(), 3).iterator();
     assertEquals(true, p.hasNext());
     assertEquals(asList("A", "B", "C"), p.next());
     assertEquals(true, p.hasNext());
