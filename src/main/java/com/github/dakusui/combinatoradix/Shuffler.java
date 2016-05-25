@@ -1,21 +1,28 @@
 package com.github.dakusui.combinatoradix;
 
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 public class Shuffler<E> extends Permutator<E> {
-  private int[] index;
 
-  protected Shuffler(List<? extends E> items, long size, long randomSeed) {
+  private final Random random;
+  private final long   numPossibleSeqs;
+
+  protected Shuffler(List<? extends E> items, long size, Random random) {
     super(items, items.size(), size);
-    Random random = new Random(randomSeed);
-    this.index = new int[(int) size];
-    for (int i = 0; i < this.index.length; i++) {
-      this.index[i] = random.nextInt(31) % (int)this.size();
-    }
+    this.random = random;
+    this.numPossibleSeqs = Utils.nPk(items.size(), items.size());
   }
 
   @Override
   protected List<E> getElement(long index) {
-    return super.getElement(this.index[(int) index]);
+    ////
+    // In theory random.nextLong can return Long.MIN_VALUE. And Math.abs(Long.MIN_VALUE)
+    // returns Long.MIN_VALUE. (This is not a typo. Refer to API reference.)
+    long nextLong;
+    //noinspection StatementWithEmptyBody
+    for (nextLong = Long.MIN_VALUE; nextLong == Long.MIN_VALUE; nextLong = this.random.nextLong()) {
+    }
+    return super.getElement(Math.abs(nextLong) % numPossibleSeqs);
   }
 }
