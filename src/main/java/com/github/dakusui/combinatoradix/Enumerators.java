@@ -1,11 +1,16 @@
 package com.github.dakusui.combinatoradix;
 
 import java.util.List;
+import java.util.Random;
 
 public enum Enumerators {
   ;
   public static <T> Shuffler<T> shuffler(List<? extends T> list, long size, long randomSeed) {
-    return new Shuffler<T>(list, size, randomSeed);
+    return shuffler(list, size, new Random(randomSeed));
+  }
+
+  public static <T> Shuffler<T> shuffler(List<? extends T> list, long size, Random random) {
+    return new Shuffler<T>(list, size, random);
   }
 
   public static <T> Permutator<T> permutator(List<? extends T> list, int k) {
