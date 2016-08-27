@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/dakusui/combinatoradix.svg?branch=master)](https://travis-ci.org/dakusui/combinatoradix)
+[![codecov.io](https://codecov.io/github/dakusui/combinatoradix/coverage.svg?branch=master)](https://codecov.io/github/dakusui/combinatoradix?branch=master)
+
 # combinatoradix
 ```combinatoradix``` is a Java library which enumerates partial permutations, 
 combinations, and repeated combinations of a set that you give to it in a natural 
