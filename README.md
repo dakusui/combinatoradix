@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/dakusui/combinatoradix.svg?branch=master)](https://travis-ci.org/dakusui/combinatoradix)
-[![codecov.io](https://codecov.io/github/dakusui/combinatoradix/coverage.svg?branch=master)](https://codecov.io/github/dakusui/combinatoradix?branch=master)
-
 # combinatoradix
 ```combinatoradix``` is a Java library which enumerates partial permutations, 
 combinations, and repeated combinations of a set that you give to it in a natural 
@@ -10,6 +7,9 @@ About what permutations, combinations, and repeated combinations are in more det
 please refer to the Wikipedia articles([4] and [5]).
 
 ```combinatoradix``` is created and maintained by Hiroshi Ukai (dakusui@gmail.com).
+
+[![Build Status](https://travis-ci.org/dakusui/combinatoradix.svg?branch=master)](https://travis-ci.org/dakusui/combinatoradix)
+[![codecov.io](https://codecov.io/github/dakusui/combinatoradix/coverage.svg?branch=master)](https://codecov.io/github/dakusui/combinatoradix?branch=master)
 
 
 # Installation
