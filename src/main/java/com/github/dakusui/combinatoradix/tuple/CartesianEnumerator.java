@@ -84,11 +84,20 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
     int c = 1;
     long ret = 0;
     for (int i = 0; i < element.size(); i++) {
-      AttrValue<T, U> each = element.get(element.size() - i - 1);
+      AttrValue<T, U> each = find(element, i);//element.get(element.size() - i - 1);
       ret += c * attrValues.get(each.attr()).indexOf(each);
       c *= attrValues.get(each.attr()).size();
     }
     return ret;
+  }
+
+  private AttrValue<T, U> find(List<AttrValue<T, U>> element, int i) {
+    int index = i; // attrsInReverseOrder.size() - i - 1;
+    for (AttrValue<T, U> each : element) {
+      if (AttrValue.equals(each.attr(), this.attrsInReverseOrder.get(index)))
+        return each;
+    }
+    throw new IllegalStateException();
   }
 
   public static void main(String... args) {
@@ -109,5 +118,11 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
 
   private static AttrValue<String, String> attrValue(String attr, String value) {
     return new AttrValue<String, String>(attr, value);
+  }
+
+  private static int checkIndex(int i) {
+    if (i < 0)
+      throw new IllegalArgumentException("!!!");
+    return i;
   }
 }

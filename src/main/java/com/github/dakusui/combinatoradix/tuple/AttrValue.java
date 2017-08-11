@@ -36,7 +36,7 @@ public class AttrValue<T, U> {
     return "(" + this.attr + "," + this.value + ")";
   }
 
-  private boolean equals(Object a, Object b) {
+  static boolean equals(Object a, Object b) {
     if (a == null)
       return b == null;
     return a.equals(b);
