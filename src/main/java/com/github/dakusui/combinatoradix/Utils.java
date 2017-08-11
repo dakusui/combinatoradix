@@ -31,4 +31,9 @@ public enum Utils {
     }
     return ret;
   }
+
+  public static void checkArgument(boolean b, String message, Object... args) {
+    if (!b)
+      throw new IllegalArgumentException(String.format(message, args));
+  }
 }

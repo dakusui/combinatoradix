@@ -66,6 +66,12 @@ public class Combinator<T> extends Enumerator.Base<T> {
     return ret;
   }
 
+  @Override
+  protected long calculateIndexOf(List<T> element) {
+    // TODO
+    throw new UnsupportedOperationException();
+  }
+
   private static <T> long calculateSize(List<? extends T> items, int k) {
     return Utils.nCk(items.size(), k);
   }

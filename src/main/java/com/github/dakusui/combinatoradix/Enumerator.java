@@ -5,14 +5,19 @@ import java.util.NoSuchElementException;
 
 public interface Enumerator<T> extends Iterable<List<T>> {
   List<T> get(long index);
+
   long size();
+
+  long indexOf(List<T> entry);
+
   class Iterator<T> implements java.util.Iterator<List<T>> {
     private final Enumerator<T> enumerator;
-    private long index;
+    private       long          index;
 
-    public Iterator(Enumerator<T> enumerator) {
+    @SuppressWarnings("WeakerAccess")
+    public Iterator(long offset, Enumerator<T> enumerator) {
       this.enumerator = enumerator;
-      this.index = 0;
+      this.index = offset;
     }
 
     @Override
@@ -47,8 +52,8 @@ public interface Enumerator<T> extends Iterable<List<T>> {
      * Creates an object of this class.
      *
      * @param items A list of elements from which returned value of {@code get(int)} will be chosen.
-     * @param k Number of elements chosen from {@code items}
-     * @param size Number of lists this object can return.
+     * @param k     Number of elements chosen from {@code items}
+     * @param size  Number of lists this object can return.
      */
     protected Base(List<? extends T> items, int k, long size) {
       this.items = items;
@@ -67,13 +72,33 @@ public interface Enumerator<T> extends Iterable<List<T>> {
 
     protected abstract List<T> getElement(long index);
 
+    @Override
+    public long indexOf(List<T> element) {
+      Utils.checkArgument(
+          element.size() == k,
+          "Size of element:%d is not valid (expected=%d)",
+          element.size(),
+          k
+      );
+      Utils.checkArgument(
+          items.containsAll(element),
+          "Element %s contained invalid value(s): (valid values=%s)",
+          element,
+          items
+      );
+      return calculateIndexOf(element);
+    }
+
+    abstract protected long calculateIndexOf(List<T> element);
+
+
     final public long size() {
       return this.enumSize;
     }
 
     @Override
     public java.util.Iterator<List<T>> iterator() {
-      return new Iterator<T>(this);
+      return new Iterator<T>(0, this);
     }
   }
 }

@@ -63,7 +63,7 @@ public class CartesianEnumeratorTest {
 
     @Test
     public void testAttrValueNotEquals1() {
-        assertTrue(attrValue("a", "V").equals(attrValue("a", "W")));
+        assertFalse(attrValue("a", "V").equals(attrValue("a", "W")));
     }
 
     @Test

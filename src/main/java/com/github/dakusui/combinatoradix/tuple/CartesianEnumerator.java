@@ -1,6 +1,7 @@
 package com.github.dakusui.combinatoradix.tuple;
 
 import com.github.dakusui.combinatoradix.Enumerator;
+import com.github.dakusui.combinatoradix.Utils;
 
 import java.util.*;
 
@@ -70,5 +71,43 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
       values.add(cur);
     }
     return ret;
+  }
+
+  @Override
+  public long indexOf(List<AttrValue<T, U>> element) {
+    Utils.checkArgument(element.size() == attrValues.size(), "Invalid number of attributes; (expected=%d, actual=%d)", attrValues.size(), element.size());
+    return calculateIndexOf(element);
+  }
+
+  @Override
+  protected long calculateIndexOf(List<AttrValue<T, U>> element) {
+    int c = 1;
+    long ret = 0;
+    for (int i = 0; i < element.size(); i++) {
+      AttrValue<T, U> each = element.get(element.size() - i - 1);
+      ret += c * attrValues.get(each.attr()).indexOf(each);
+      c *= attrValues.get(each.attr()).size();
+    }
+    return ret;
+  }
+
+  public static void main(String... args) {
+    List<AttrValue<String, String>> attrValues = new LinkedList<AttrValue<String, String>>();
+    attrValues.add(attrValue("key1", "A"));
+    attrValues.add(attrValue("key1", "B"));
+    attrValues.add(attrValue("key2", "a"));
+    attrValues.add(attrValue("key2", "b"));
+    attrValues.add(attrValue("key3", "X"));
+    attrValues.add(attrValue("key3", "Y"));
+
+    Enumerator<AttrValue<String, String>> enumerator = new CartesianEnumerator<String, String>(attrValues);
+
+    for (int i = 5; i < enumerator.size(); i++) {
+      System.out.printf("%s: %s -> %s : %s%n", i, enumerator.get(i), enumerator.indexOf(enumerator.get(i)), enumerator.get(enumerator.indexOf(enumerator.get(i))));
+    }
+  }
+
+  private static AttrValue<String, String> attrValue(String attr, String value) {
+    return new AttrValue<String, String>(attr, value);
   }
 }
