@@ -51,27 +51,57 @@ public class Combinator<T> extends Enumerator.Base<T> {
     // 4:[b, d]:4
     // 5:[c, d]:6
     long ret = 0;
-    int i = element.size() - 1;
-    List<T> remainingSymbols = new LinkedList<T>(symbols);
-    for (T each : element) {
-      ret += numberOfSequencesConsumedBefore(remainingSymbols.indexOf(each), i, symbols.size());
-      remainingSymbols = remainingSymbols.subList(remainingSymbols.indexOf(each) + 1, remainingSymbols.size());
-      i--;
+    int[] encoded = encode(element);
+    for (int i = 0; i < encoded.length; i++) {
+      if (i == encoded.length - 1)
+        ret += encoded[i];
+      else
+        ret += numberOfSequencesConsumedBefore(
+            encoded[i],
+            encoded.length - i - 1,
+            symbols.size(),
+            k
+        );
     }
     return ret;
   }
 
-  private int numberOfSequencesConsumedBefore(int digit, int positionFromRightMost, int numSymbols) {
+  // symbols [s0,s1,s2,...,sn]
+  //
+  //         <----i+1---->
+  //         [a,...,.,.]   - numSymbols - 1 C i
+  //         [b,...,.,.]   - numSymbols - 2 C i
+  //         [c,...,.,.]   - numSymbols - d-1 C i
+  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
+
+  //         <----i+1---->
+  //         [a,...,.,.]   - numSymbols - 1 C i
+  //         [b,...,.,.]   - numSymbols - 2 C i
+  //         [c,...,.,.]   - numSymbols - d-1 C i
+  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
+  private static int numberOfSequencesConsumedBefore(int digit, int positionFromRightMost, int numSymbols, int numChosen) {
     //
     // [a, b, c, d]
     // c, 1, 4 -> f(2, 1, 4) -> 3 + 2 = 5 = 3C1 + 2C1
     // a, 1, 4 ->
+
+    // [a, b, c, d]
     //
     if (positionFromRightMost == 0)
-      return digit;
+      throw new IllegalArgumentException();
     int ret = 0;
-    for (int i = digit; i > 0; i--) {
-      ret += Utils.nCk(numSymbols - i, positionFromRightMost);
+    for (int i = 0; i < digit; i++) {
+      ret += Utils.nCk(numSymbols - i - 1, positionFromRightMost);
+    }
+    return ret;
+  }
+
+  int[] encode(List<T> element) {
+    List<T> work = new LinkedList<T>(this.symbols);
+    int[] ret = new int[this.k];
+    for (int i = 0; i < ret.length; i++) {
+      ret[i] = work.indexOf(element.get(i));
+      work = work.subList(ret[i] + 1, work.size());
     }
     return ret;
   }

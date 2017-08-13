@@ -3,10 +3,7 @@ package com.github.dakusui.combinatoradix;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -16,11 +13,81 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class CombinatorTest extends EnumeratorTestBase {
-  public static void main(String... args) {
+  @Test
+  public void given4SymbolsAnd2forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        2
+    );
+  }
+
+  @Test
+  public void given5SymbolsAnd2forK$whenRunCombinator$thenCorrect() {
     exerciseTest(
         asList("a", "b", "c", "d", "e"),
         2
     );
+  }
+
+
+  @Test
+  public void given4SymbolsAnd1forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        1
+    );
+  }
+
+  @Test
+  public void given4SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        3
+    );
+  }
+
+  @Test
+  public void given5SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d", "e"),
+        3
+    );
+  }
+
+
+
+  @Test
+  public void given3SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c"),
+        3
+    );
+  }
+
+  @Test
+  public void encode() {
+    // 5C1 - 5    4C1 - 4   3C1 - 3  2C1 - 2
+    // 5C2 - 10   4C2 - 6   3C2 - 3
+    // 5C3 - 10   4C3 - 4
+    // 5C4 - 5
+
+    // [1,-]   - 3
+    // [2,-]   - 3 + 2 = 5
+    // [1,-,-] -       = 6 = 4C2
+    // [2,-,-] -       = 9 = 4C2+3C2
+    encode(
+        asList("a", "b", "c", "d", "e"),
+        3
+    );
+  }
+  private static void encode(List<String> in, int k) {
+    Combinator<String> combinator = new Combinator<String>(
+        in,
+        k
+    );
+    for (int i = 0; i < combinator.size(); i++) {
+      System.out.printf("%d:%s:%s%n", i, combinator.get(i), Arrays.toString(combinator.encode(combinator.getElement(i))));
+    }
   }
 
   private static void exerciseTest(List<String> in, int k) {
@@ -28,6 +95,9 @@ public class CombinatorTest extends EnumeratorTestBase {
         in,
         k
     );
+    System.out.println("--");
+    encode(in, k);
+
     final List<String> expected = new LinkedList<String>() {{
       for (int i = 0; i < combinator.size(); i++) {
         add(String.format("%2d:%s", i, combinator.get(i)));
@@ -39,6 +109,7 @@ public class CombinatorTest extends EnumeratorTestBase {
       }
     }};
 
+    System.out.println("--");
     System.out.printf("%2s %-20s %-20s%n", "", "expected", "actual");
     for (int i = 0; i < combinator.size(); i++) {
       System.out.printf(
