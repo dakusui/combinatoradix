@@ -46,17 +46,17 @@ public interface Enumerator<T> extends Iterable<List<T>> {
 
     protected final int k;
 
-    protected final List<? extends T> items;
+    protected final List<? extends T> symbols;
 
     /**
      * Creates an object of this class.
      *
-     * @param items A list of elements from which returned value of {@code get(int)} will be chosen.
+     * @param symbols A list of elements from which returned value of {@code get(int)} will be chosen.
      * @param k     Number of elements chosen from {@code items}
      * @param size  Number of lists this object can return.
      */
-    protected Base(List<? extends T> items, int k, long size) {
-      this.items = items;
+    protected Base(List<? extends T> symbols, int k, long size) {
+      this.symbols = symbols;
       this.k = k;
       this.enumSize = size;
     }
@@ -81,10 +81,10 @@ public interface Enumerator<T> extends Iterable<List<T>> {
           k
       );
       Utils.checkArgument(
-          items.containsAll(element),
+          symbols.containsAll(element),
           "Element %s contained invalid value(s): (valid values=%s)",
           element,
-          items
+          symbols
       );
       return calculateIndexOf(element);
     }

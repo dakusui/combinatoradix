@@ -39,8 +39,8 @@ public class HomogeniousCombinator<T> extends Combinator<T> {
   @Override
   protected List<T> getElement(long index) {
     List<T> ret = new LinkedList<T>();
-    List<T> tmp = new ArrayList<T>(this.items);
-    int[] locator = index2locator(index, items.size(), k);
+    List<T> tmp = new ArrayList<T>(this.symbols);
+    int[] locator = index2locator(index, symbols.size(), k);
     for (int i : locator) {
       ret.add(tmp.get(i));
       tmp = tmp.subList(i, tmp.size());

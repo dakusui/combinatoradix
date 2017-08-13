@@ -7,17 +7,30 @@ import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.*;
 
 public class PermutatorTest extends EnumeratorTestBase {
+  public static void main(String... args) {
+    Permutator<String> permutator = new Permutator<String>(
+        asList(
+            "a", "b", "c", "d"
+        ),
+        2
+
+    );
+    for (int i = 0; i < permutator.size(); i++) {
+      System.out.printf("%d:%s:%d%n", i, permutator.getElement(i), permutator.indexOf(permutator.getElement(i)));
+    }
+  }
+
   @Test
   public void test_empty() {
     // Empty set should result in empty iterator immediately
     Iterator<List<String>> i = new Permutator<String>(Collections.<String>emptyList(), 0).iterator();
     assertTrue(i.hasNext());
-    assertEquals(Collections.emptyList(), i.next());
+    assertEquals(emptyList(), i.next());
     assertFalse(i.hasNext());
   }
 
@@ -25,7 +38,7 @@ public class PermutatorTest extends EnumeratorTestBase {
   public void test_nP0() {
     Iterator<List<String>> p = new Permutator<String>(testset1(), 0).iterator();
     assertEquals(true, p.hasNext());
-    assertEquals(asList(), p.next());
+    assertEquals(emptyList(), p.next());
     assertEquals(false, p.hasNext());
   }
 
@@ -33,15 +46,15 @@ public class PermutatorTest extends EnumeratorTestBase {
   public void test_nP1() {
     Iterator<List<String>> p = new Permutator<String>(testset1(), 1).iterator();
     assertEquals(true, p.hasNext());
-    assertEquals(asList("A"), p.next());
+    assertEquals(singletonList("A"), p.next());
     assertEquals(true, p.hasNext());
-    assertEquals(asList("B"), p.next());
+    assertEquals(singletonList("B"), p.next());
     assertEquals(true, p.hasNext());
-    assertEquals(asList("C"), p.next());
+    assertEquals(singletonList("C"), p.next());
     assertEquals(true, p.hasNext());
-    assertEquals(asList("D"), p.next());
+    assertEquals(singletonList("D"), p.next());
     assertEquals(true, p.hasNext());
-    assertEquals(asList("E"), p.next());
+    assertEquals(singletonList("E"), p.next());
     assertEquals(false, p.hasNext());
   }
 
