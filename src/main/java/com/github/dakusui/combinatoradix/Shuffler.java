@@ -1,5 +1,7 @@
 package com.github.dakusui.combinatoradix;
 
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
+
 import java.util.List;
 import java.util.Random;
 
@@ -11,7 +13,7 @@ public class Shuffler<E> extends Permutator<E> {
   protected Shuffler(List<? extends E> items, long size, Random random) {
     super(items, items.size(), size);
     this.random = random;
-    this.numPossibleSeqs = Utils.nPk(items.size(), items.size());
+    this.numPossibleSeqs = InternalUtils.nPk(items.size(), items.size());
   }
 
   @Override

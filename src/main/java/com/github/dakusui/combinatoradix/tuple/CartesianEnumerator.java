@@ -1,13 +1,13 @@
 package com.github.dakusui.combinatoradix.tuple;
 
 import com.github.dakusui.combinatoradix.Enumerator;
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
 
 import java.util.*;
 
 public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> {
-
   private final ArrayList<T> attrsInReverseOrder;
-  private Map<T, List<AttrValue<T, U>>> attrValues = new HashMap<T, List<AttrValue<T, U>>>();
+  private final Map<T, List<AttrValue<T, U>>> attrValues;
 
   @SuppressWarnings("unchecked")
   public CartesianEnumerator(List<AttrValue<T, U>> attributeValues) {
@@ -17,19 +17,13 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
         calculateSize(attributeValues)
     );
     this.attrsInReverseOrder = new ArrayList<T>(this.k);
-    for (AttrValue<T, U> cur : this.items) {
+    for (AttrValue<T, U> cur : this.symbols) {
       if (!this.attrsInReverseOrder.contains(cur.attr())) {
         this.attrsInReverseOrder.add(cur.attr());
       }
     }
     this.attrValues = attrValues(attributeValues);
     Collections.reverse(this.attrsInReverseOrder);
-  }
-
-  private static int countAttributes(AttrValue<Object, Object>[] attributeValues) {
-    Set<AttrValue<?, ?>> attrs = new HashSet<AttrValue<?, ?>>();
-    Collections.addAll(attrs, attributeValues);
-    return attrs.size();
   }
 
   @Override
@@ -44,6 +38,32 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
     }
     Collections.reverse(ret);
     return ret;
+  }
+
+  @Override
+  public long indexOf(List<AttrValue<T, U>> element) {
+    InternalUtils.checkCondition(element.size() == attrValues.size(), "Invalid number of attributes; (expected=%d, actual=%d)", attrValues.size(), element.size());
+    return calculateIndexOf(element);
+  }
+
+  @Override
+  protected long calculateIndexOf(List<AttrValue<T, U>> element) {
+    int c = 1;
+    long ret = 0;
+    for (int i = 0; i < element.size(); i++) {
+      AttrValue<T, U> each = find(element, i);//element.get(element.size() - i - 1);
+      ret += c * attrValues.get(each.attr()).indexOf(each);
+      c *= attrValues.get(each.attr()).size();
+    }
+    return ret;
+  }
+
+  private AttrValue<T, U> find(List<AttrValue<T, U>> element, int index) {
+    for (AttrValue<T, U> each : element) {
+      if (AttrValue.equals(each.attr(), this.attrsInReverseOrder.get(index)))
+        return each;
+    }
+    throw new IllegalStateException();
   }
 
   private static <T, U> long calculateSize(List<AttrValue<T, U>> attributeValues) {
@@ -70,5 +90,11 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
       values.add(cur);
     }
     return ret;
+  }
+
+  private static int countAttributes(AttrValue<Object, Object>[] attributeValues) {
+    Set<AttrValue<?, ?>> attrs = new HashSet<AttrValue<?, ?>>();
+    Collections.addAll(attrs, attributeValues);
+    return attrs.size();
   }
 }

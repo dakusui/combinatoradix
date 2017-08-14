@@ -1,6 +1,12 @@
 package com.github.dakusui.combinatoradix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import static com.github.dakusui.combinatoradix.utils.InternalUtils.checkCondition;
+import static java.util.Arrays.asList;
 
 public class Cartesianator<E> implements Enumerator<E> {
   private final List<List<? extends E>> sets;
@@ -20,6 +26,56 @@ public class Cartesianator<E> implements Enumerator<E> {
     return this.size;
   }
 
+  @Override
+  public long indexOf(List<E> entry) {
+    int entrySize = entry.size();
+    int expectedSize = sets.size();
+    checkCondition(
+        entry.size() == sets.size(),
+        "Size of entry %d is not valid. It should have been %d",
+        entrySize,
+        expectedSize
+    );
+    for (int i = 0; i < entrySize; i++) {
+      E value = entry.get(i);
+      List<? extends E> validValues = sets.get(entrySize - i - 1);
+      checkCondition(
+          validValues.contains(value),
+          "entry.get(%d)='%s' is not a valid value. Valid values: %s",
+          i,
+          value,
+          validValues
+      );
+    }
+    return calculateIndexOf(entry);
+  }
+
+  private long calculateIndexOf(List<E> entry) {
+    long ret = 0;
+    int c = 1;
+    for (int i = 0; i < entry.size(); i++) {
+      int j = entry.size() - i - 1;
+      List<? extends E> set = sets.get(i);
+      ret += set.indexOf(entry.get(j)) * c;
+      c *= set.size();
+    }
+    return ret;
+  }
+
+  /*
+   * sets:
+   * 0| a b
+   * 1| a b c
+   * 2| a b c d
+   *
+   * index:
+   * 13
+   *
+   * ret:
+   * 0|
+   * 1|
+   * 2|
+   */
   private List<E> getElement(long index) {
     List<E> ret = new LinkedList<E>();
     for (List<? extends E> eachSet : this.sets) {
@@ -53,6 +109,20 @@ public class Cartesianator<E> implements Enumerator<E> {
 
   @Override
   public java.util.Iterator<List<E>> iterator() {
-    return new Enumerator.Iterator<E>(this);
+    return new Enumerator.Iterator<E>(0,this);
+  }
+
+  public static void main(String... args) {
+    //noinspection unchecked
+    Cartesianator<String> cartesianator = new Cartesianator<String>(
+        asList(
+            asList("a", "b"),
+            asList("a", "b", "c"),
+            asList("a", "b", "c", "d")
+        )
+    );
+    for (int i = 0; i < cartesianator.size; i++) {
+      System.out.println(i + ":" + cartesianator.get(i) + ":" + cartesianator.indexOf(cartesianator.get(i)));
+    }
   }
 }

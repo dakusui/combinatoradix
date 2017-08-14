@@ -7,18 +7,77 @@ import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class CombinatorTest extends EnumeratorTestBase {
+public class CombinatorTest extends CombinatorTestBase {
+  @Test
+  public void given4SymbolsAnd2forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        2
+    );
+  }
+
+  @Test
+  public void given5SymbolsAnd2forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d", "e"),
+        2
+    );
+  }
+
+
+  @Test
+  public void given4SymbolsAnd1forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        1
+    );
+  }
+
+  @Test
+  public void given4SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d"),
+        3
+    );
+  }
+
+  @Test
+  public void given5SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d", "e"),
+        3
+    );
+  }
+
+  @Test
+  public void given6SymbolsAnd4forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c", "d", "e", "f"),
+        4
+    );
+  }
+
+
+  @Test
+  public void given3SymbolsAnd3forK$whenRunCombinator$thenCorrect() {
+    exerciseTest(
+        asList("a", "b", "c"),
+        3
+    );
+  }
 
   @Test
   public void test_empty() {
     // Empty set should result in empty iterator immediately
     Iterator<List<String>> i = new Combinator<String>(Collections.<String>emptyList(), 0).iterator();
     assertTrue(i.hasNext());
-    assertEquals(Collections.emptyList(), i.next());
+    assertEquals(emptyList(), i.next());
     assertFalse(i.hasNext());
   }
 
@@ -26,7 +85,7 @@ public class CombinatorTest extends EnumeratorTestBase {
   public void test_nC0() {
     Iterator<List<String>> combinator = new Combinator<String>(testset1(), 0).iterator();
     assertEquals(true, combinator.hasNext());
-    assertEquals(asList(), combinator.next());
+    assertEquals(emptyList(), combinator.next());
     assertEquals(false, combinator.hasNext());
   }
 
@@ -34,13 +93,13 @@ public class CombinatorTest extends EnumeratorTestBase {
   public void test_nC1() {
     Iterator<List<String>> combinator = new Combinator<String>(testset1(), 1).iterator();
     assertEquals(true, combinator.hasNext());
-    assertEquals(asList("A"), combinator.next());
+    assertEquals(singletonList("A"), combinator.next());
     assertEquals(true, combinator.hasNext());
-    assertEquals(asList("B"), combinator.next());
+    assertEquals(singletonList("B"), combinator.next());
     assertEquals(true, combinator.hasNext());
-    assertEquals(asList("C"), combinator.next());
+    assertEquals(singletonList("C"), combinator.next());
     assertEquals(true, combinator.hasNext());
-    assertEquals(asList("D"), combinator.next());
+    assertEquals(singletonList("D"), combinator.next());
     assertEquals(true, combinator.hasNext());
     assertEquals(asList("E"), combinator.next());
     assertEquals(false, combinator.hasNext());
@@ -100,8 +159,14 @@ public class CombinatorTest extends EnumeratorTestBase {
 
   @Test
   public void test_1C1() {
-    Enumerator<String> enumerator = Enumerators.combinator(asList("A"), 1);
+    Enumerator<String> enumerator = Enumerators.combinator(singletonList("A"), 1);
     assertEquals(1, enumerator.size());
-    assertEquals(asList("A"), enumerator.get(0));
+    assertEquals(singletonList("A"), enumerator.get(0));
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  <C extends Combinator<T>, T> C createCombinator(List<? extends T> symbols, int k) {
+    return (C) new Combinator(symbols, k);
   }
 }

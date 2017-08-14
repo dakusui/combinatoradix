@@ -1,5 +1,8 @@
 package com.github.dakusui.combinatoradix;
 
+import com.github.dakusui.combinatoradix.utils.TestBase;
+import com.github.dakusui.combinatoradix.utils.TestUtils;
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -7,7 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class BigNumberTest {
+public class BigNumberTest extends TestBase {
     private static final List<String> dataSet = Arrays.asList(
       /*
        1    2    3    4    5    6    7    8    9   10
@@ -65,6 +68,6 @@ public class BigNumberTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test100C50() {
-        Utils.nCk(100, 50);
+        InternalUtils.nCk(100, 50);
     }
 }
