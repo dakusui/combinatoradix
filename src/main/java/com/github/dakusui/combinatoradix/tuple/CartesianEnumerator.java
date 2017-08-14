@@ -1,7 +1,7 @@
 package com.github.dakusui.combinatoradix.tuple;
 
 import com.github.dakusui.combinatoradix.Enumerator;
-import com.github.dakusui.combinatoradix.Utils;
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
 
 import java.util.*;
 
@@ -42,7 +42,7 @@ public class CartesianEnumerator<T, U> extends Enumerator.Base<AttrValue<T, U>> 
 
   @Override
   public long indexOf(List<AttrValue<T, U>> element) {
-    Utils.checkArgument(element.size() == attrValues.size(), "Invalid number of attributes; (expected=%d, actual=%d)", attrValues.size(), element.size());
+    InternalUtils.checkCondition(element.size() == attrValues.size(), "Invalid number of attributes; (expected=%d, actual=%d)", attrValues.size(), element.size());
     return calculateIndexOf(element);
   }
 

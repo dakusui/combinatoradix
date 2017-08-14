@@ -1,9 +1,9 @@
-package com.github.dakusui.combinatoradix;
+package com.github.dakusui.combinatoradix.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public enum Utils {
+public enum InternalUtils {
   ;
 
   public static long nPk(long n, long k) {
@@ -35,25 +35,32 @@ public enum Utils {
     return ret;
   }
 
-  public static void checkArgument(boolean b, String message, Object... args) {
+  @SuppressWarnings("unchecked")
+  public static <T, E extends RuntimeException> T check(T value, Predicate<T> predicate, ExceptionFactory<E> exceptionFactory, String format, Object... args) {
+    if (!predicate.test(value))
+      throw exceptionFactory.create(format, args);
+    return value;
+  }
+
+  public static void checkCondition(boolean b, String message, Object... args) {
     if (!b)
       throw new IllegalArgumentException(String.format(message, args));
   }
 
-  static int[] chop(int[] in) {
+  public static int[] chop(int[] in) {
     int[] arr = new int[in.length - 1];
     System.arraycopy(in, 0, arr, 0, arr.length);
     return arr;
   }
 
-  static int sumAll(int[] values) {
+  public static int sumAll(int[] values) {
     int ret = 0;
     for (int each : values)
       ret += each;
     return ret;
   }
 
-  static <T> List<T> arrayList(List<T> items) {
+  public static <T> List<T> arrayList(List<T> items) {
     if (items instanceof ArrayList) {
       return items;
     }

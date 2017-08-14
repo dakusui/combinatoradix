@@ -1,10 +1,12 @@
 package com.github.dakusui.combinatoradix;
 
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.github.dakusui.combinatoradix.Utils.nHk;
+import static com.github.dakusui.combinatoradix.utils.InternalUtils.nHk;
 
 public class HomogeniousCombinator<T> extends Combinator<T> {
 
@@ -52,15 +54,15 @@ public class HomogeniousCombinator<T> extends Combinator<T> {
   }
 
   private static long numSeq(int[] digit, int numSymbols, int numChosen) {
-    Utils.checkArgument(numChosen >= 0, "numChosen(%s) mustn't be negative", numChosen);
-    Utils.checkArgument(numChosen <= numSymbols, "numChosen(%s) mustn't be greater than numSymbols(%s)", numChosen, numSymbols);
-    Utils.checkArgument(digit != null, "digit mustn't be null");
-    Utils.checkArgument(digit.length > 0 && digit.length <= numChosen, "digit(%s) less than or equal to %s", digit, numChosen);
+    InternalUtils.checkCondition(numChosen >= 0, "numChosen(%s) mustn't be negative", numChosen);
+    InternalUtils.checkCondition(numChosen <= numSymbols, "numChosen(%s) mustn't be greater than numSymbols(%s)", numChosen, numSymbols);
+    InternalUtils.checkCondition(digit != null, "digit mustn't be null");
+    InternalUtils.checkCondition(digit.length > 0 && digit.length <= numChosen, "digit(%s) less than or equal to %s", digit, numChosen);
 
     if (digit.length == numChosen) {
       if (digit.length == 1)
         return digit[digit.length - 1];
-      return digit[digit.length - 1] + numSeq(Utils.chop(digit), numSymbols, numChosen);
+      return digit[digit.length - 1] + numSeq(InternalUtils.chop(digit), numSymbols, numChosen);
     }
     if (digit.length == 1) {
       long ret = 0;
@@ -70,10 +72,10 @@ public class HomogeniousCombinator<T> extends Combinator<T> {
       return ret;
     }
     long ret = 0;
-    int[] chopped = Utils.chop(digit);
+    int[] chopped = InternalUtils.chop(digit);
     ret += numSeq(chopped, numSymbols, numChosen);
 
-    int symbolsConsumed = Utils.sumAll(chopped);
+    int symbolsConsumed = InternalUtils.sumAll(chopped);
     for (int i = 0; i < digit[digit.length - 1]; i++) {
       int n = numSymbols - symbolsConsumed - i;
       ret += nHk(n, numChosen - digit.length);

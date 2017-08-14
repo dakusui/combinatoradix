@@ -2,6 +2,7 @@ package com.github.dakusui.combinatoradix;
 
 import com.github.dakusui.combinatoradix.tuple.AttrValue;
 import com.github.dakusui.combinatoradix.tuple.CartesianEnumerator;
+import com.github.dakusui.combinatoradix.utils.TestUtils;
 import org.junit.Test;
 
 import java.util.LinkedList;

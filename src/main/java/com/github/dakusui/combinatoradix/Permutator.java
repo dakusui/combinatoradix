@@ -1,5 +1,7 @@
 package com.github.dakusui.combinatoradix;
 
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,7 +51,7 @@ public class Permutator<T> extends Enumerator.Base<T> {
   }
 
   private static <T> long calculateSize(List<? extends T> items, int k) {
-    return Utils.nPk(items.size(), k);
+    return InternalUtils.nPk(items.size(), k);
   }
 
   private static int[] index2locator(long index, int lsradix, int k) {

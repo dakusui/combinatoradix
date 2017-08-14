@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.github.dakusui.combinatoradix.Utils.checkArgument;
+import static com.github.dakusui.combinatoradix.utils.InternalUtils.checkCondition;
 import static java.util.Arrays.asList;
 
 public class Cartesianator<E> implements Enumerator<E> {
@@ -30,7 +30,7 @@ public class Cartesianator<E> implements Enumerator<E> {
   public long indexOf(List<E> entry) {
     int entrySize = entry.size();
     int expectedSize = sets.size();
-    checkArgument(
+    checkCondition(
         entry.size() == sets.size(),
         "Size of entry %d is not valid. It should have been %d",
         entrySize,
@@ -39,7 +39,7 @@ public class Cartesianator<E> implements Enumerator<E> {
     for (int i = 0; i < entrySize; i++) {
       E value = entry.get(i);
       List<? extends E> validValues = sets.get(entrySize - i - 1);
-      checkArgument(
+      checkCondition(
           validValues.contains(value),
           "entry.get(%d)='%s' is not a valid value. Valid values: %s",
           i,

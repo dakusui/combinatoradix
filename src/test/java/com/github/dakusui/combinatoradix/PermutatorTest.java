@@ -1,28 +1,116 @@
 package com.github.dakusui.combinatoradix;
 
+import com.github.dakusui.combinatoradix.utils.InternalUtils;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
 
 public class PermutatorTest extends EnumeratorTestBase {
-  public static void main(String... args) {
-    Permutator<String> permutator = new Permutator<String>(
-        asList(
-            "a", "b", "c", "d"
+  @Test
+  public void givenA_1$whenRunPermutator$thenCorrect() {
+    exerciseTest(singletonList(
+        "a"
+        ),
+        1
+    );
+  }
+
+  @Test
+  public void givenA_0$whenRunPermutator$thenCorrect() {
+    exerciseTest(singletonList(
+        "a"
+        ),
+        0
+    );
+  }
+
+  @Test
+  public void givenABCD_4$whenRunPermutator$thenCorrect() {
+    exerciseTest(asList(
+        "a", "b", "c", "d"
+        ),
+        4
+    );
+  }
+
+  @Test
+  public void givenABCD_2$whenRunPermutator$thenCorrect() {
+    exerciseTest(asList(
+        "a", "b", "c", "d"
         ),
         2
-
     );
+  }
+
+  @Test
+  public void givenABCD_1$whenRunPermutator$thenCorrect() {
+    exerciseTest(asList(
+        "a", "b", "c", "d"
+        ),
+        1
+    );
+  }
+
+  @Test
+  public void givenABCD_0$whenRunPermutator$thenCorrect() {
+    exerciseTest(asList(
+        "a", "b", "c", "d"
+        ),
+        0
+    );
+  }
+
+  @Test
+  public void givenABCD_5$whenRunPermutator$thenError() {
+    exerciseTest(asList(
+        "a", "b", "c", "d"
+        ),
+        5
+    );
+  }
+
+  private void exerciseTest(List<String> symbols, int k) {
+    final Permutator<String> permutator = new Permutator<String>(
+        symbols,
+        k
+    );
+    final List<String> expected = new LinkedList<String>() {{
+      for (int i = 0; i < permutator.size(); i++) {
+        add(String.format("%2d:%s", i, permutator.get(i)));
+      }
+    }};
+    List<String> actual = new LinkedList<String>() {{
+      for (int i = 0; i < permutator.size(); i++) {
+        add(String.format("%2d:%s", permutator.indexOf(permutator.get(i)), permutator.get(i)));
+      }
+    }};
+
+    System.out.println("--");
+    System.out.printf("%2s %-20s %-20s%n", "", "expected", "actual");
     for (int i = 0; i < permutator.size(); i++) {
-      System.out.printf("%d:%s:%d%n", i, permutator.getElement(i), permutator.indexOf(permutator.getElement(i)));
+      System.out.printf(
+          "%2s %-20s %-20s%n",
+          expected.get(i).equals(actual.get(i)) ?
+              "" :
+              "NG",
+          expected.get(i),
+          actual.get(i));
     }
+
+    assertThat(
+        actual.toString(),
+        CoreMatchers.equalTo(expected.toString())
+    );
   }
 
   @Test
@@ -130,6 +218,6 @@ public class PermutatorTest extends EnumeratorTestBase {
       assertEquals(3, entry.size());
       i++;
     }
-    assertEquals(Utils.nPk(3, 3), i);
+    assertEquals(InternalUtils.nPk(3, 3), i);
   }
 }

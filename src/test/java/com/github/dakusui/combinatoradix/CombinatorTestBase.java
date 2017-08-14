@@ -28,7 +28,7 @@ public abstract class CombinatorTestBase extends EnumeratorTestBase {
     ));
   }
 
-  static void encode(Combinator<String> combinator) {
+  private static void encode(Combinator<String> combinator) {
     for (int i = 0; i < combinator.size(); i++) {
       System.out.printf("%d:%s:%s%n", i, combinator.get(i), Arrays.toString(combinator.encode(combinator.getElement(i))));
     }

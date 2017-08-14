@@ -2,7 +2,10 @@ package com.github.dakusui.combinatoradix;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -32,8 +35,7 @@ public class CartesianatorTest {
 
   @Test
   public void normal2$3() {
-    //noinspection unchecked
-    Enumerator<String> c = Enumerators.cartesianator(asList(
+    @SuppressWarnings("unchecked") Enumerator<String> c = Enumerators.cartesianator(asList(
         asList("A1", "A2"),
         asList("B1", "B2"),
         asList("C1", "C2")
@@ -62,8 +64,7 @@ public class CartesianatorTest {
 
   @Test
   public void boundary1$1_0$1() {
-    //noinspection unchecked
-    Enumerator<String> c = Enumerators.cartesianator(asList(
+    @SuppressWarnings("unchecked") Enumerator<String> c = Enumerators.cartesianator(asList(
         asList("A1", "A2"),
         new LinkedList<String>()
     ));
