@@ -67,31 +67,51 @@ public class Combinator<T> extends Enumerator.Base<T> {
   }
 
   // symbols [s0,s1,s2,...,sn]
+  //   |<---------k-------->|
+  //         j                              j = k - i - 1
+  //   |<---->
+  //         <----i+1---->                d-1 >= i
+  //         [a,...,.,.]   - numSymbols - 1 C i
+  //         [b,...,.,.]   - numSymbols - 2 C i
+  //         [c,...,.,.]   - numSymbols - d-1 C i
+  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
   //
-  //         <----i+1---->
-  //         [a,...,.,.]   - numSymbols - 1 C i
-  //         [b,...,.,.]   - numSymbols - 2 C i
-  //         [c,...,.,.]   - numSymbols - d-1 C i
-  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
+  //     if numSymbols - j < i ?
+  //
+  //    ...  [a,...,.,.]
+  //    ...  [b,...,.,.]
+  //    ...  [c,...,.,.]
+  //    ...  [d=xi,...,x1,x0]; d = digit, i = positionFromRight
 
-  //         <----i+1---->
-  //         [a,...,.,.]   - numSymbols - 1 C i
-  //         [b,...,.,.]   - numSymbols - 2 C i
-  //         [c,...,.,.]   - numSymbols - d-1 C i
-  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
   private static int numberOfSequencesConsumedBefore(int digit, int positionFromRightMost, int numSymbols, int numChosen) {
     //
     // [a, b, c, d]
     // c, 1, 4 -> f(2, 1, 4) -> 3 + 2 = 5 = 3C1 + 2C1
     // a, 1, 4 ->
 
-    // [a, b, c, d]
+    //    [0, 1, -] ...?
     //
     if (positionFromRightMost == 0)
       throw new IllegalArgumentException();
     int ret = 0;
     for (int i = 0; i < digit; i++) {
-      ret += Utils.nCk(numSymbols - i - 1, positionFromRightMost);
+      int j = numChosen - i - 1;
+      //      if (numSymbols - j < i)
+      ret += Utils.nCk(
+          //          min(
+          //numSymbols - j,
+          numSymbols - i - 1,
+          //              numChosen - i - 1
+          //          ),
+          positionFromRightMost
+      ) - Utils.nCk(
+          numSymbols - j -1,
+          positionFromRightMost
+      );
+      //        ret += Utils.nCk(numSymbols - i - 1, numSymbols - j);
+      //      else
+      //      ret += Utils.nCk(numSymbols - i - 1, positionFromRightMost);
+      //      ret += Utils.nCk(j - i - 1, positionFromRightMost);
     }
     return ret;
   }
