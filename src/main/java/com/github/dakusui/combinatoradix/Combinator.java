@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.github.dakusui.combinatoradix.Utils.nCk;
+
 public class Combinator<T> extends Enumerator.Base<T> {
   static class CDivResult {
     long mod;
     int  quotient;
   }
 
-
   public Combinator(List<? extends T> items, int k) {
-    super(arrayList(items), k, calculateSize(items, k));
+    super(Utils.arrayList(items), k, calculateSize(items, k));
   }
 
   protected Combinator(List<? extends T> items, int k, long size) {
-    super(arrayList(items), k, size);
+    super(Utils.arrayList(items), k, size);
   }
 
   @Override
@@ -50,70 +51,12 @@ public class Combinator<T> extends Enumerator.Base<T> {
     // 3:[b, c]:3
     // 4:[b, d]:4
     // 5:[c, d]:6
-    long ret = 0;
-    int[] encoded = encode(element);
-    for (int i = 0; i < encoded.length; i++) {
-      if (i == encoded.length - 1)
-        ret += encoded[i];
-      else
-        ret += numberOfSequencesConsumedBefore(
-            encoded[i],
-            encoded.length - i - 1,
-            symbols.size(),
-            k
-        );
-    }
-    return ret;
-  }
-
-  // symbols [s0,s1,s2,...,sn]
-  //   |<---------k-------->|
-  //         j                              j = k - i - 1
-  //   |<---->
-  //         <----i+1---->                d-1 >= i
-  //         [a,...,.,.]   - numSymbols - 1 C i
-  //         [b,...,.,.]   - numSymbols - 2 C i
-  //         [c,...,.,.]   - numSymbols - d-1 C i
-  //         [d=xi,...,x1,x0]; d = digit, i = positionFromRight
-  //
-  //     if numSymbols - j < i ?
-  //
-  //    ...  [a,...,.,.]
-  //    ...  [b,...,.,.]
-  //    ...  [c,...,.,.]
-  //    ...  [d=xi,...,x1,x0]; d = digit, i = positionFromRight
-
-  private static int numberOfSequencesConsumedBefore(int digit, int positionFromRightMost, int numSymbols, int numChosen) {
-    //
-    // [a, b, c, d]
-    // c, 1, 4 -> f(2, 1, 4) -> 3 + 2 = 5 = 3C1 + 2C1
-    // a, 1, 4 ->
-
-    //    [0, 1, -] ...?
-    //
-    if (positionFromRightMost == 0)
-      throw new IllegalArgumentException();
-    int ret = 0;
-    for (int i = 0; i < digit; i++) {
-      int j = numChosen - i - 1;
-      //      if (numSymbols - j < i)
-      ret += Utils.nCk(
-          //          min(
-          //numSymbols - j,
-          numSymbols - i - 1,
-          //              numChosen - i - 1
-          //          ),
-          positionFromRightMost
-      ) - Utils.nCk(
-          numSymbols - j -1,
-          positionFromRightMost
-      );
-      //        ret += Utils.nCk(numSymbols - i - 1, numSymbols - j);
-      //      else
-      //      ret += Utils.nCk(numSymbols - i - 1, positionFromRightMost);
-      //      ret += Utils.nCk(j - i - 1, positionFromRightMost);
-    }
-    return ret;
+    //    long ret = 0;
+    return numSeq(
+        encode(element),
+        symbols.size(),
+        k
+    );
   }
 
   int[] encode(List<T> element) {
@@ -126,17 +69,60 @@ public class Combinator<T> extends Enumerator.Base<T> {
     return ret;
   }
 
-  private static <T> List<T> arrayList(List<T> items) {
-    if (items instanceof ArrayList) {
-      return items;
+  private static long numSeq(int[] digit, int numSymbols, int numChosen) {
+    Utils.checkArgument(numChosen >= 0, "numChosen(%s) mustn't be negative", numChosen);
+    Utils.checkArgument(numChosen <= numSymbols, "numChosen(%s) mustn't be greater than numSymbols(%s)", numChosen, numSymbols);
+    Utils.checkArgument(digit != null, "digit mustn't be null");
+    Utils.checkArgument(digit.length > 0 && digit.length <= numChosen, "digit(%s) less than or equal to %s", digit, numChosen);
+
+    if (digit.length == numChosen) {
+      if (digit.length == 1)
+        return digit[digit.length - 1];
+      return digit[digit.length - 1] + numSeq(Utils.chop(digit), numSymbols, numChosen);
     }
-    return new ArrayList<T>(items);
+    if (digit.length == 1) {
+      // [c] (2,-,-), [a,b,c,d]
+      //    [a,b,c]
+      //    [a,b,d]
+      //    [a,b,e]
+      //    [a,c,d]
+      //    [a,c,e]
+      //    [a,d,e] 4C2
+      //    [b,c,d]
+      //    [b,c,e]
+      //    [b,d,e] 3C2
+      long ret = 0;
+      for (int i = 0; i < digit[0]; i++) {
+        ret += nCk(numSymbols - i - 1, numChosen - 1);
+      }
+      return ret;
+    }
+    // [b,d] (1,1,-), [a,b,c,d]
+    //    [a,b,c]
+    //    [a,b,d]
+    //    [a,b,e]
+    //    [a,c,d]
+    //    [a,c,e]
+    //    [a,d,e] 4C2
+    //    [b,c,d]
+    //    [b,c,e]
+    //
+    long ret = 0;
+    int[] chopped = Utils.chop(digit);
+    ret += numSeq(chopped, numSymbols, numChosen);
+
+    int symbolsConsumed = Utils.sumAll(chopped) + chopped.length + 1;
+    for (int i = 0; i < digit[digit.length - 1]; i++) {
+      int n = numSymbols - symbolsConsumed - i;
+      ret += nCk(n, numChosen - digit.length);
+    }
+    return ret;
   }
 
   private static void cdiv(CDivResult result, long index, int n, int k) {
     int q = 0;
     for (int nn = n - 1; nn >= k - 1; nn--) {
-      long nnCk_1 = Utils.nCk(nn, k - 1);
+      long nnCk_1 = nCk(nn, k - 1);
       if (index < nnCk_1) {
         result.mod = index;
         result.quotient = q;
@@ -160,6 +146,6 @@ public class Combinator<T> extends Enumerator.Base<T> {
   }
 
   private static <T> long calculateSize(List<? extends T> items, int k) {
-    return Utils.nCk(items.size(), k);
+    return nCk(items.size(), k);
   }
 }
