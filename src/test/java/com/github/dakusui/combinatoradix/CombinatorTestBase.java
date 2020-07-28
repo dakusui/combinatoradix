@@ -1,7 +1,7 @@
 package com.github.dakusui.combinatoradix;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.LinkedList;

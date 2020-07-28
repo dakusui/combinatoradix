@@ -1,15 +1,15 @@
 package com.github.dakusui.combinatoradix.utils;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class TestBase {
-  @Before
+  @BeforeEach
   public void suppressStdOutErrIfRunUnderSurefire() {
     TestUtils.suppressStdOutErrIfRunUnderSurefire();
   }
 
-  @After
+  @AfterEach
   public void restoreStdOutErr() {
     TestUtils.restoreStdOutErr();
   }

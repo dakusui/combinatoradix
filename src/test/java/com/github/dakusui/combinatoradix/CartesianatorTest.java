@@ -1,6 +1,6 @@
 package com.github.dakusui.combinatoradix;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CartesianatorTest {
   @Test
@@ -35,7 +35,7 @@ public class CartesianatorTest {
 
   @Test
   public void normal2$3() {
-    @SuppressWarnings("unchecked") Enumerator<String> c = Enumerators.cartesianator(asList(
+    Enumerator<String> c = Enumerators.cartesianator(asList(
         asList("A1", "A2"),
         asList("B1", "B2"),
         asList("C1", "C2")
@@ -54,41 +54,39 @@ public class CartesianatorTest {
 
   @Test
   public void boundary0$1() {
-    Enumerator<String> c = Enumerators.cartesianator(singletonList(
-        new LinkedList<String>()
-    ));
+    Enumerator<String> c = Enumerators.cartesianator(singletonList(new LinkedList<>()));
     assertEquals(0, c.size());
     Iterator<List<String>> i = c.iterator();
-    assertEquals(false, i.hasNext());
+    assertFalse(i.hasNext());
   }
 
   @Test
   public void boundary1$1_0$1() {
-    @SuppressWarnings("unchecked") Enumerator<String> c = Enumerators.cartesianator(asList(
+    Enumerator<String> c = Enumerators.cartesianator(asList(
         asList("A1", "A2"),
-        new LinkedList<String>()
+        new LinkedList<>()
     ));
     assertEquals(0, c.size());
     Iterator<List<String>> i = c.iterator();
-    assertEquals(false, i.hasNext());
+    assertFalse(i.hasNext());
   }
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void givenEmptyIterator$whenNextIsAttemptedAfterLast$thenNoSuchElementThrown() {
     ////
     // Given: iterator is at the last
     Enumerator<String> c = Enumerators.cartesianator(singletonList(
-        new LinkedList<String>()
+        new LinkedList<>()
     ));
     assertEquals(0, c.size());
     Iterator<List<String>> i = c.iterator();
-    assertEquals(false, i.hasNext());
+    assertFalse(i.hasNext());
 
-    i.next();
+    assertThrows(NoSuchElementException.class, i::next);
   }
 
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void givenNonEmptyIterator$whenNextIsAttemptedAfterLast$thenNoSuchElementThrown() {
     ////
     // Given: iterator is at the last
@@ -97,15 +95,15 @@ public class CartesianatorTest {
     ));
     assertEquals(1, c.size());
     Iterator<List<String>> i = c.iterator();
-    assertEquals(true, i.hasNext());
+    assertTrue(i.hasNext());
     i.next();
-    assertEquals(false, i.hasNext());
+    assertFalse(i.hasNext());
     ////
     // When: next() is attempted after last
-    i.next();
+    assertThrows(NoSuchElementException.class, i::next);
   }
 
-  @Test(expected = IndexOutOfBoundsException.class)
+  @Test
   public void givenEnumerator$whenGetAfterLast$thenExceptionThrown() {
     ////
     // Given: enumerator
@@ -114,17 +112,17 @@ public class CartesianatorTest {
     ));
     assertEquals(1, c.size());
     ////
-    // When:
-    c.get(1);
+    // Then:
+    assertThrows(IndexOutOfBoundsException.class, () -> /* whrn */c.get(1));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void givenTooManyNonEmptyLists$whenNewCartesinator$thenExceptionThrown() {
     ////
     // Given:
-    List<List<String>> lists = new LinkedList<List<String>>();
+    List<List<String>> lists = new LinkedList<>();
     for (int i = 0; i < 100; i++) {
-      List<String> each = new LinkedList<String>();
+      List<String> each = new LinkedList<>();
       each.add("I" + i + "-" + 0);
       each.add("I" + i + "-" + 1);
       lists.add(each);
@@ -132,8 +130,10 @@ public class CartesianatorTest {
 
     ////
     // When: New Cartesinator
-    Enumerator<String> c = Enumerators.cartesianator(lists);
-    assertEquals(1, c.size());
+    assertThrows(IllegalArgumentException.class, () -> {
+      Enumerator<String> c = Enumerators.cartesianator(lists);
+      assertEquals(1, c.size());
+    });
   }
 
 }
