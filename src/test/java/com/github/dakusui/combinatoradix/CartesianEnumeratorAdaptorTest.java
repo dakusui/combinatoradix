@@ -1,10 +1,11 @@
 package com.github.dakusui.combinatoradix;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CartesianEnumeratorAdaptorTest {
   @Test
@@ -42,14 +43,14 @@ public class CartesianEnumeratorAdaptorTest {
     assertEquals(12, numTuples);
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void error01() {
     Domains.Builder<String, Integer> builder = new Domains.Builder<String, Integer>();
     builder.addDomain("A", 1, 2, 3).addDomain("B", 1, 2).addDomain("C", 1, 2);
 
-    CartesianEnumeratorAdaptor<Map<String, Integer>, String, Integer> cea = new SimpleCartesianEnumerator<String, Integer>(builder.build());
+    final CartesianEnumeratorAdaptor<Map<String, Integer>, String, Integer> cea = new SimpleCartesianEnumerator<String, Integer>(builder.build());
     ////
     // Should fail here with UnsupportedOperationException
-    cea.iterator().remove();
+    assertThrows(UnsupportedOperationException.class, () -> cea.iterator().remove());
   }
 }

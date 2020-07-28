@@ -11,7 +11,7 @@ public interface Domains<T, U> {
       implements Domains<T, U> {
     @Override
     public List<T> getDomainNames() {
-      return new LinkedList<T>(this.keySet());
+      return new LinkedList<>(this.keySet());
     }
 
     @Override
@@ -24,20 +24,21 @@ public interface Domains<T, U> {
     private final Map<T, List<U>> map;
 
     public Builder() {
-      this(new LinkedHashMap<T, List<U>>());
+      this(new LinkedHashMap<>());
     }
 
     public Builder(Map<T, List<U>> map) {
       this.map = map;
     }
 
-    public Builder<T, U> addDomain(T key, U... values) {
+    @SafeVarargs
+    public final Builder<T, U> addDomain(T key, U... values) {
       this.map.put(key, Arrays.asList(values));
       return this;
     }
 
     public Domains<T, U> build() {
-      DomainsImpl<T, U> ret = new DomainsImpl<T, U>();
+      DomainsImpl<T, U> ret = new DomainsImpl<>();
       for (T k : this.map.keySet()) {
         ret.put(k, this.map.get(k));
       }
