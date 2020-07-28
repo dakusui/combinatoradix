@@ -2,9 +2,9 @@ package com.github.dakusui.combinatoradix;
 
 import com.github.dakusui.combinatoradix.utils.InternalUtils;
 import com.github.dakusui.combinatoradix.utils.TestBase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class InternalUtilsTest extends TestBase {
   @Test

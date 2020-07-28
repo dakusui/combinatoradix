@@ -3,20 +3,20 @@ package com.github.dakusui.combinatoradix;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ShufflerTest {
 
   @Test
   public void checkStability() {
-    Enumerator<String> shuffler = Enumerators.shuffler(new LinkedList<String>(Arrays.asList("1", "2", "3", "4", "5")), 20, 4649);
+    Enumerator<String> shuffler = Enumerators.shuffler(new LinkedList<>(Arrays.asList("1", "2", "3", "4", "5")), 20, 4649);
     assertEquals(20, shuffler.size());
     String[] expectations = new String[] {
         "[3, 2, 4, 1, 5]", "[4, 1, 3, 2, 5]", "[4, 3, 2, 1, 5]", "[3, 1, 2, 4, 5]",
@@ -33,7 +33,7 @@ public class ShufflerTest {
   @Test
   public void checkEvenness() {
     final int w = 2000;
-    Enumerator<String> shuffler = Enumerators.shuffler(new LinkedList<String>(Arrays.asList("1", "2", "3", "4", "5")), w, 4649);
+    Enumerator<String> shuffler = Enumerators.shuffler(new LinkedList<>(Arrays.asList("1", "2", "3", "4", "5")), w, 4649);
     assertEquals(w, shuffler.size());
     for (int i = 0; i < 5; i++) {
       for (int j = 1; j <= 5; j++) {
@@ -42,12 +42,12 @@ public class ShufflerTest {
     }
   }
 
-  private BaseMatcher<Integer> inRangeMatcher(final int w) {
+  private BaseMatcher<Integer> inRangeMatcher(@SuppressWarnings("SameParameterValue") final int w) {
     return new BaseMatcher<Integer>() {
-      int m = w / 5;
-      int d = m / 10;
-      int min = m - d;
-      int max = m + d;
+      final int m = w / 5;
+      final int d = m / 10;
+      final int min = m - d;
+      final int max = m + d;
 
       @Override
       public boolean matches(Object item) {

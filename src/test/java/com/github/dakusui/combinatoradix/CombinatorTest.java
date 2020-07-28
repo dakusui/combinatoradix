@@ -1,6 +1,6 @@
 package com.github.dakusui.combinatoradix;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -9,9 +9,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CombinatorTest extends CombinatorTestBase {
   @Test
@@ -75,7 +73,7 @@ public class CombinatorTest extends CombinatorTestBase {
   @Test
   public void test_empty() {
     // Empty set should result in empty iterator immediately
-    Iterator<List<String>> i = new Combinator<String>(Collections.<String>emptyList(), 0).iterator();
+    Iterator<List<String>> i = new Combinator<>(Collections.<String>emptyList(), 0).iterator();
     assertTrue(i.hasNext());
     assertEquals(emptyList(), i.next());
     assertFalse(i.hasNext());
@@ -83,78 +81,78 @@ public class CombinatorTest extends CombinatorTestBase {
 
   @Test
   public void test_nC0() {
-    Iterator<List<String>> combinator = new Combinator<String>(testset1(), 0).iterator();
-    assertEquals(true, combinator.hasNext());
+    Iterator<List<String>> combinator = new Combinator<>(testset1(), 0).iterator();
+    assertTrue(combinator.hasNext());
     assertEquals(emptyList(), combinator.next());
-    assertEquals(false, combinator.hasNext());
+    assertFalse(combinator.hasNext());
   }
 
   @Test
   public void test_nC1() {
-    Iterator<List<String>> combinator = new Combinator<String>(testset1(), 1).iterator();
-    assertEquals(true, combinator.hasNext());
+    Iterator<List<String>> combinator = new Combinator<>(testset1(), 1).iterator();
+    assertTrue(combinator.hasNext());
     assertEquals(singletonList("A"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(singletonList("B"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(singletonList("C"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(singletonList("D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
-    assertEquals(asList("E"), combinator.next());
-    assertEquals(false, combinator.hasNext());
+    assertTrue(combinator.hasNext());
+    assertEquals(singletonList("E"), combinator.next());
+    assertFalse(combinator.hasNext());
   }
 
   @Test
   public void test_nC2() {
-    Iterator<List<String>> combinator = new Combinator<String>(testset1(), 2).iterator();
-    assertEquals(true, combinator.hasNext());
+    Iterator<List<String>> combinator = new Combinator<>(testset1(), 2).iterator();
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "B"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "C"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "C"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("C", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("C", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("D", "E"), combinator.next());
-    assertEquals(false, combinator.hasNext());
+    assertFalse(combinator.hasNext());
   }
 
   @Test
   public void test_nC3() {
     Iterator<List<String>> combinator = Enumerators.combinator(testset1(), 3).iterator();
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "B", "C"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "B", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "B", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "C", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "C", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("A", "D", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "C", "D"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "C", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("B", "D", "E"), combinator.next());
-    assertEquals(true, combinator.hasNext());
+    assertTrue(combinator.hasNext());
     assertEquals(asList("C", "D", "E"), combinator.next());
-    assertEquals(false, combinator.hasNext());
+    assertFalse(combinator.hasNext());
   }
 
   @Test
@@ -167,6 +165,6 @@ public class CombinatorTest extends CombinatorTestBase {
   @SuppressWarnings("unchecked")
   @Override
   <C extends Combinator<T>, T> C createCombinator(List<? extends T> symbols, int k) {
-    return (C) new Combinator(symbols, k);
+    return (C) new Combinator<>(symbols, k);
   }
 }
