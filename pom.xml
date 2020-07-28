@@ -3,7 +3,7 @@
 
     <groupId>com.github.dakusui</groupId>
     <artifactId>combinatoradix</artifactId>
-    <version>0.9.3-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>A mathematical enumeration library for Java</description>
     <packaging>jar</packaging>
 
