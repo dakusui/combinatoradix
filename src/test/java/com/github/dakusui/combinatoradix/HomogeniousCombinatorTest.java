@@ -88,7 +88,7 @@ public class HomogeniousCombinatorTest extends CombinatorTestBase {
   @Test
   public void test_empty() {
     // Empty set should result in empty iterator immediately
-    Iterator<List<String>> i = new HomogeniousCombinator<String>(Collections.<String>emptyList(), 0).iterator();
+    Iterator<List<String>> i = new HomogeniousCombinator<>(Collections.<String>emptyList(), 0).iterator();
     assertTrue(i.hasNext());
     assertEquals(emptyList(), i.next());
     assertFalse(i.hasNext());
@@ -96,7 +96,7 @@ public class HomogeniousCombinatorTest extends CombinatorTestBase {
 
   @Test
   public void test_nH1() {
-    Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<String>(testset1(), 1).iterator();
+    Iterator<List<String>> homogeniousCombinator = new HomogeniousCombinator<>(testset1(), 1).iterator();
     assertTrue(homogeniousCombinator.hasNext());
     assertEquals(singletonList("A"), homogeniousCombinator.next());
     assertTrue(homogeniousCombinator.hasNext());
